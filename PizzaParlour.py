@@ -8,8 +8,6 @@ CORS(app)
 #
 # This function to retrieve last order number
 # and return a new order number
-
-
 def find_last_order_no():
     with open('order/last_order_no', 'r') as f:
         last_no = f.readline()
@@ -20,18 +18,22 @@ def find_last_order_no():
         f.write(str(new_no))
     return str(new_no)
 
-# it's part of start code
-
-
+# part of starter code
 @app.route('/pizza')
 def welcome_pizza():
     return 'Welcome to Pizza Planet!'
 
+@app.route('/create_menu', methods=['POST', 'GET'])
+def create_menu():
+    jsonData = request.get_json()
+    order_file_name = 'order/' + 'Menu.json'
+    with open(order_file_name, 'w') as outfile:
+        json.dump(jsonData, outfile)
+    return 0
+
 # Persist a new order on backend data storage
 # in this project, it's just stored under /order
 # directory as a system file
-
-
 @app.route('/create', methods=['POST', 'GET'])
 def create_order():
     new_order_no = find_last_order_no()
@@ -42,8 +44,6 @@ def create_order():
     return new_order_no
 
 # Retrieve an order from backend data storage by an order number
-
-
 @app.route('/retrieve/<string:order_no>', methods=['GET'])
 def retrieve_order(order_no):
     order_file_name = 'order/' + order_no + '.json'
@@ -56,8 +56,6 @@ def retrieve_order(order_no):
         return "ERROR: order - " + order_no + " not found!"
 
 # Delete an order from backend data storage by an order number
-
-
 @app.route('/delete/<string:order_no>', methods=['GET'])
 def delete_order(order_no):
     order_file_name = 'order/' + order_no + '.json'
@@ -68,7 +66,6 @@ def delete_order(order_no):
         # although order file is not found, it's still treated as
         # delete successfully
         return order_no
-
 
 @app.route('/update/<string:order_no>', methods=['POST', 'GET'])
 def update_order(order_no):
@@ -81,6 +78,7 @@ def update_order(order_no):
         return order_no
     else:
         return "ERROR: order - " + order_no + " not found!"
+
 
 
 if __name__ == "__main__":
