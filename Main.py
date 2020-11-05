@@ -32,39 +32,52 @@ def processOrderSubmission():
     with open('order/Menu.json') as f:
         menu = json.load(f)
         f.close
-    print('''Select a number for the action you would like to do: 
-    1. Add an item.
-    2. Submit order.  ''')
     order = Order(find_last_order_no())
     while (still_ordering):
-        selection = input("Make your selection: ")
+        selection = input('''Select from the following:
+        1. Add an item.
+        2. Submit order.  
+        Make your selection:''')
         if selection == "1":
-            pizza = input("Enter pizza name: ")
-            while not pizza in menu["pizza"]["Type"].keys():
-                print("we don't provide this type of pizza")
+            print('''which item do you want: 
+                1. Pizza.
+                2. Drinks.  ''')
+            itemChoice = input("Make your Choice: ")
+            if itemChoice == "1":
                 pizza = input("Enter pizza name: ")
-            size = input("Enter size (12, 15, 18): ")
-            while size not in ["12", "15", "18"]:
-                print("please choose the available size")
+                while not pizza in menu["pizza"]["Type"].keys():
+                    print("we don't provide this type of pizza")
+                    pizza = input("Enter pizza name: ")
                 size = input("Enter size (12, 15, 18): ")
-            orderPizza = Pizza(pizza, int(size))
-            additionalToppings = input("Do you want additional toppings (y/n)?")
-            if (additionalToppings == "y"):
-                additionalToppings = []
-                stillAdding = True
-                print("Enter 'q' to finish adding toppings")
-                while (stillAdding):
-                    newTopping = input("topping: ")
-                    while newTopping not in menu["pizza"][
-                        "Toppings"].keys() and newTopping != "q":
-                        print("we don't have this topping")
+                while size not in ["12", "15", "18"]:
+                    print("please choose the available size")
+                    size = input("Enter size (12, 15, 18): ")
+                orderPizza = Pizza(pizza, int(size))
+                additionalToppings = input(
+                    "Do you want additional toppings (y/n)?")
+                if (additionalToppings == "y"):
+                    additionalToppings = []
+                    stillAdding = True
+                    print("Enter 'q' to finish adding toppings")
+                    while (stillAdding):
                         newTopping = input("topping: ")
-                    if (newTopping == "q"):
-                        stillAdding = False
-                    else:
-                        additionalToppings.append(newTopping)
-                orderPizza.addToppings(additionalToppings)
-            order.addItem(orderPizza)
+                        while newTopping not in menu["pizza"][
+                            "Toppings"].keys() and newTopping != "q":
+                            print("we don't have this topping")
+                            newTopping = input("topping: ")
+                        if (newTopping == "q"):
+                            stillAdding = False
+                        else:
+                            additionalToppings.append(newTopping)
+                    orderPizza.addToppings(additionalToppings)
+                order.addItem(orderPizza)
+            elif itemChoice == "2":
+                drink = input("Enter drink's name: ")
+                while drink not in menu["drinks"].keys():
+                    print("we don't have this Drinks, please choose again")
+                    drink = input("Enter drink's name: ")
+                orderDrink = Drinks(drink)
+                order.addItem(orderDrink)
         elif selection == "2":
             submitOrder(order)
             still_ordering = False
