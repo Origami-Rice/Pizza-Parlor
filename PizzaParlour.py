@@ -29,7 +29,7 @@ def create_menu():
     order_file_name = 'order/' + 'Menu.json'
     with open(order_file_name, 'w') as outfile:
         json.dump(jsonData, outfile)
-    return 0
+    return jsonData 
 
 # Persist a new order on backend data storage
 # in this project, it's just stored under /order
