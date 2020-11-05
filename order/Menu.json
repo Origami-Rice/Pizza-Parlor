@@ -1,0 +1,22 @@
+{
+  "Size": [
+    "small",
+    "medium",
+    "large"
+  ],
+  "Type": [
+    "pepperoni",
+    "margherita",
+    "vegetarian",
+    "Neapolitan"
+  ],
+  "Topping": [
+    "olives",
+    "tomatoes",
+    "mushrooms",
+    "jalapenos",
+    "chicken",
+    "beef",
+    "pepperoni"
+  ]
+}
