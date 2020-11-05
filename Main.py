@@ -30,6 +30,47 @@ def submitOrder(order):
         f.write(str(new_no))
     return str(new_no) """
 
+def print_pizzas(menu):
+    print("Pizzas:")
+    for pizza in menu["pizza"]["Type"].items():
+        print(pizza[0] + " Small: $" + str(pizza[1][1]) + " Medium: $" + str(pizza[1][2]) + " Large: $" + str(pizza[1][3])) 
+     
+def print_drinks(menu):
+    print("Drinks:")
+    for drink in menu["drinks"].items():
+        print(drink[0] + ": $" + str(drink[1]))
+    
+def print_toppings(menu): 
+    print("Toppings:")
+    for topping in menu["pizza"]["Toppings"].items():
+        print(topping[0] + ": $" + str(topping[1]))
+
+def printItemInfo(item_name, menu):
+    for pizza in menu["pizza"]["Type"].items(): 
+        if (pizza[0] == item_name): 
+            print(item_name + " pizza prices are $" + str(pizza[1][1]) + "(small), $" + str(pizza[1][2]) + "(medium), $" + 
+            str(pizza[1][3]) + "(large)")
+            return 
+    for drink in menu["drinks"].items():
+        if (drink[0] == item_name):
+            print(item_name + " price is $" + str(drink[1])) 
+            return 
+
+def printMenu(menu):
+    selection = input('''Select an action:
+    1. Print the full menu  
+    2. Find the prices of an item on the menu
+    Make your selection:  ''')
+    if (selection == "1"): 
+        print_pizzas(menu)
+        print_drinks(menu)
+    elif (selection == "2"): 
+        item = input('''Enter the name of the item you want to find:''')
+        printItemInfo(item, menu)
+    #print_toppings(menu)
+    return 
+
+
 
 def processOrderSubmission():
     still_ordering = True
@@ -95,24 +136,38 @@ def processOrderSubmission():
 if __name__ == '__main__':
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
-    # base_url = 'http://127.0.0.1:5000/'
-    # with open('order/Menu.json') as f:
-    #     menu = json.load(f)
-    #     f.close
-    # r = requests.post(base_url + 'create_menu', data=json.dumps(menu),
-    #                   headers=headers)
-    # r = requests.get(base_url + 'retrieve/' + 'Menu')
-    # print("Response body: " + r.text)
+    #base_url = 'http://127.0.0.1:5000/'
+    with open('order/Menu.json') as f:
+        menu = json.load(f)
+        f.close
+    '''r = requests.post(base_url + 'create_menu', data=json.dumps(menu),
+                       headers=headers)
+    r = requests.get(base_url + 'retrieve/' + 'Menu')
+    print("Response body: " + r.text) '''
 
-    while True:
+    running = True 
+    while running:
         print('''Select a number for the action you would like to do: 
-        1. Submit an order
-        2. 
-        3. 
+        1. Access the menu  
+        2. Submit an order
+        3. Update an existing order 
+        4. Cancel an order
+        5. Call for delivery/pickup. 
+        6. Quit 
         ''')
         selection = input("Make your selection: ")
 
         if selection == "1":
-            processOrderSubmission()
+            printMenu(menu)
+        elif selection == "2":
+            processOrderSubmission() 
+        elif selection == "3":
+            pass 
+        elif selection == "4":
+            pass 
+        elif selection == "5":
+            pass 
+        elif selection == "6":
+            running = False 
         else:
             print("invalid selection")
