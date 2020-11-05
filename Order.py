@@ -11,14 +11,6 @@ class Order:
     def addItem(self, item):
         self.items.append(item)
 
-    def addDrinks(self, type):
-        drink = Drinks(type)
-        self.addItem(drink)
-
-    def addPizza(self, size, topping, type):
-        pizza = Pizza(size, topping, type)
-        self.addItem(pizza)
-
     def jsonify(self):
         jdata = {
             "order_number": self.order_number,
