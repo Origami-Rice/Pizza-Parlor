@@ -1,22 +1,80 @@
 {
-  "Size": [
-    "small",
-    "medium",
-    "large"
+  "drinks": [
+    {
+      "Coke": 2.5
+    },
+    {
+      "Diet Coke": 3
+    },
+    {
+      "Coke Zero": 3
+    },
+    {
+      "Pepsi": 2.5
+    },
+    {
+      "Diet Pepsi": 3
+    },
+    {
+      "Dr. Pepper": 4
+    },
+    {
+      "Water": 1
+    },
+    {
+      "Juice": 2
+    }
   ],
-  "Type": [
-    "pepperoni",
-    "margherita",
-    "vegetarian",
-    "Neapolitan"
-  ],
-  "Topping": [
-    "olives",
-    "tomatoes",
-    "mushrooms",
-    "jalapenos",
-    "chicken",
-    "beef",
-    "pepperoni"
+  "pizza": [
+    {
+      "size": [
+        {
+          "small": 10
+        },
+        {
+          "medium": 20
+        },
+        {
+          "large": 25
+        }
+      ],
+      "Type": [
+        {
+          "pepperoni": 15
+        },
+        {
+          "margherita": 15
+        },
+        {
+          "vegetarian": 15
+        },
+        {
+          "Neapolitan": 10
+        }
+      ],
+      "Toppings": [
+        {
+          "olives": 2
+        },
+        {
+          "tomatoes": 2
+        },
+        {
+          "mushrooms": 1.5
+        },
+        {
+          "jalapenos": 2
+        },
+        {
+          "chicken": 5
+        },
+        {
+          "beef": 6
+        },
+        {
+          "pepperoni": 6
+        }
+      ]
+    }
   ]
 }
