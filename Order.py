@@ -22,9 +22,7 @@ class Order:
         return jsondata
 
     def getTotalPrice(self):
-        totalPrice = 0
+        totalPrice = 0.0
         for i in self.items:
-            totalPrice += i.price
+            totalPrice += i.price * i.quantity
         return totalPrice
-
-

@@ -1,11 +1,12 @@
 import json
 class Pizza:
-    def __init__(self, type, size):
+    def __init__(self, type, size, quantity):
         with open('order/Menu.json') as f:
             menu = json.load(f)
             f.close
         self.type = type
         self.size = size
+        self.quantity = quantity
         pizzas = menu["pizza"]["Type"]
         self.topping = pizzas[type][0]
         if size == 12:
@@ -25,4 +26,5 @@ class Pizza:
         for i in topping:
             self.price += toppings[i]
 
-
+    def changeQuantity(self, quantity):
+        self.quantity = quantity
