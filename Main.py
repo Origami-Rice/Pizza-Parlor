@@ -70,8 +70,6 @@ def printMenu(menu):
     #print_toppings(menu)
     return 
 
-
-
 def processOrderSubmission():
     still_ordering = True
     with open('order/Menu.json') as f:
@@ -132,6 +130,13 @@ def processOrderSubmission():
         else:
             print("invalid selection")
 
+def processOrderCancellation(): 
+    headers = {'Content-Type': 'application/json'}
+    base_url = 'https://uoftcsc301a2.herokuapp.com/'
+    order_no = input('''Enter the number of the order you wish to cancel: ''')
+    r = requests.get(base_url + "delete/" + order_no)
+    print("The order has been deleted.") 
+    
 
 if __name__ == '__main__':
     headers = {'Content-Type': 'application/json'}
@@ -164,7 +169,7 @@ if __name__ == '__main__':
         elif selection == "3":
             pass 
         elif selection == "4":
-            pass 
+            processOrderCancellation() 
         elif selection == "5":
             pass 
         elif selection == "6":
