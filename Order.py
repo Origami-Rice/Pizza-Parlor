@@ -20,3 +20,11 @@ class Order:
         jdata["items"] = jsonItems
         jsondata = json.dumps(jdata)
         return jsondata
+
+    def getTotalPrice(self):
+        totalPrice = 0
+        for i in self.items:
+            totalPrice += i.price
+        return totalPrice
+
+
