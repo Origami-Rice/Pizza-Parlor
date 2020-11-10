@@ -11,3 +11,6 @@ class Drinks:
     def jsonif(self):
         jdata = json.dumps(self.__dict__)
         return jdata
+
+    def changeQuantity(self, quantity):
+        self.quantity = quantity
