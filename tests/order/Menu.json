@@ -1,0 +1,61 @@
+{
+  "drinks": {
+    "Coke": 2.5,
+    "Diet Coke": 3,
+    "Coke Zero": 3,
+    "Pepsi": 2.5,
+    "Diet Pepsi": 3,
+    "Dr. Pepper": 4,
+    "Water": 1,
+    "Juice": 2
+  },
+  "pizza": {
+    "Type": {
+      "pepperoni": [
+        [
+          "olives",
+          "tomatoes"
+        ],
+        10,
+        15,
+        20
+      ],
+      "margherita": [
+        [
+          "olives",
+          "tomatoes"
+        ],
+        10,
+        15,
+        20
+      ],
+      "vegetarian": [
+        [
+          "olives",
+          "tomatoes"
+        ],
+        10,
+        15,
+        20
+      ],
+      "Neapolitan": [
+        [
+          "olives",
+          "tomatoes"
+        ],
+        10,
+        15,
+        20
+      ]
+    },
+    "Toppings": {
+      "olives": 2,
+      "tomatoes": 2,
+      "mushrooms": 1.5,
+      "jalapenos": 2,
+      "chicken": 5,
+      "beef": 6,
+      "pepperoni": 6
+    }
+  }
+}

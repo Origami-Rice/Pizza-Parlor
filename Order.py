@@ -26,3 +26,6 @@ class Order:
         for i in self.items:
             totalPrice += i.price * i.quantity
         return totalPrice
+
+
+

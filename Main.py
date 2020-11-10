@@ -83,6 +83,7 @@ def printMenu(menu):
     # print_toppings(menu)
     return
 
+
 def setUpPizza():
     pizza = input("Enter pizza name: ")
     while not pizza in menu["pizza"]["Type"].keys():
@@ -94,6 +95,7 @@ def setUpPizza():
         size = input("Enter size (12, 15, 18): ")
     orderPizza = Pizza(pizza, int(size), 1)
     return orderPizza
+
 
 def setUpTopping():
     additionalToppings = []
@@ -111,6 +113,7 @@ def setUpTopping():
             additionalToppings.append(newTopping)
     return additionalToppings
 
+
 def setUpQuantity():
     pizzaQuantity = input("how many would you like: ")
     while float(pizzaQuantity) <= 0 or float(
@@ -118,10 +121,6 @@ def setUpQuantity():
         print("invalid quantity, please choose again")
         pizzaQuantity = input("how many would you like: ")
     return pizzaQuantity
-
-
-
-
 
 
 def processOrderSubmission():

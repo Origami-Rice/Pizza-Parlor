@@ -5,7 +5,7 @@ class Drinks:
         with open('order/Menu.json') as f:
             menu = json.load(f)
             f.close
-        self.price = menu["drinks"][type]
+        self.price = menu["drinks"][type] * quantity
         self.quantity = quantity
 
     def jsonif(self):
@@ -14,3 +14,6 @@ class Drinks:
 
     def changeQuantity(self, quantity):
         self.quantity = quantity
+
+    def getPrice(self):
+        return self.price
