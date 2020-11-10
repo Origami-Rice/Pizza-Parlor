@@ -14,10 +14,12 @@ def submitOrder(order):
                 "Order submitted successfully order_number is " + rsp.text)
             print("the total cost will be $" + str(order.getTotalPrice()))
             order.order_number = rsp.text
-            rsp = requests.post('https://uoftcsc301a2.herokuapp.com/update/'+order.order_number,
-                                json=order.jsonify(), headers=headers)
+            rsp = requests.post(
+                'https://uoftcsc301a2.herokuapp.com/update/' + order.order_number,
+                json=order.jsonify(), headers=headers)
             print(
-                "Status of updating order " + order.order_number + ": " + str(rsp.status_code))
+                "Status of updating order " + order.order_number + ": " + str(
+                    rsp.status_code))
         else:
             print("submit failed, please try again")
     else:
@@ -34,31 +36,38 @@ def submitOrder(order):
         f.write(str(new_no))
     return str(new_no) """
 
+
 def print_pizzas(menu):
     print("Pizzas:")
     for pizza in menu["pizza"]["Type"].items():
-        print(pizza[0] + " Small: $" + str(pizza[1][1]) + " Medium: $" + str(pizza[1][2]) + " Large: $" + str(pizza[1][3]))
+        print(pizza[0] + " Small: $" + str(pizza[1][1]) + " Medium: $" + str(
+            pizza[1][2]) + " Large: $" + str(pizza[1][3]))
+
 
 def print_drinks(menu):
     print("Drinks:")
     for drink in menu["drinks"].items():
         print(drink[0] + ": $" + str(drink[1]))
 
+
 def print_toppings(menu):
     print("Toppings:")
     for topping in menu["pizza"]["Toppings"].items():
         print(topping[0] + ": $" + str(topping[1]))
 
+
 def printItemInfo(item_name, menu):
     for pizza in menu["pizza"]["Type"].items():
         if (pizza[0] == item_name):
-            print(item_name + " pizza prices are $" + str(pizza[1][1]) + "(small), $" + str(pizza[1][2]) + "(medium), $" +
-            str(pizza[1][3]) + "(large)")
+            print(item_name + " pizza prices are $" + str(
+                pizza[1][1]) + "(small), $" + str(pizza[1][2]) + "(medium), $" +
+                  str(pizza[1][3]) + "(large)")
             return
     for drink in menu["drinks"].items():
         if (drink[0] == item_name):
             print(item_name + " price is $" + str(drink[1]))
             return
+
 
 def printMenu(menu):
     selection = input('''Select an action:
@@ -71,8 +80,49 @@ def printMenu(menu):
     elif (selection == "2"):
         item = input('''Enter the name of the item you want to find:''')
         printItemInfo(item, menu)
-    #print_toppings(menu)
+    # print_toppings(menu)
     return
+
+def setUpPizza():
+    pizza = input("Enter pizza name: ")
+    while not pizza in menu["pizza"]["Type"].keys():
+        print("we don't provide this type of pizza")
+        pizza = input("Enter pizza name: ")
+    size = input("Enter size (12, 15, 18): ")
+    while size not in ["12", "15", "18"]:
+        print("please choose the available size")
+        size = input("Enter size (12, 15, 18): ")
+    orderPizza = Pizza(pizza, int(size), 1)
+    return orderPizza
+
+def setUpTopping():
+    additionalToppings = []
+    stillAdding = True
+    print("Enter 'q' to finish adding toppings")
+    while (stillAdding):
+        newTopping = input("topping: ")
+        while newTopping not in menu["pizza"][
+            "Toppings"].keys() and newTopping != "q":
+            print("we don't have this topping")
+            newTopping = input("topping: ")
+        if (newTopping == "q"):
+            stillAdding = False
+        else:
+            additionalToppings.append(newTopping)
+    return additionalToppings
+
+def setUpQuantity():
+    pizzaQuantity = input("how many would you like: ")
+    while float(pizzaQuantity) <= 0 or float(
+            pizzaQuantity) % 1 != 0.0:
+        print("invalid quantity, please choose again")
+        pizzaQuantity = input("how many would you like: ")
+    return pizzaQuantity
+
+
+
+
+
 
 def processOrderSubmission():
     still_ordering = True
@@ -94,43 +144,20 @@ def processOrderSubmission():
                 2. Drinks.  ''')
             itemChoice = input("Make your Choice: ")
             if itemChoice == "1":
-                pizza = input("Enter pizza name: ")
-                while not pizza in menu["pizza"]["Type"].keys():
-                    print("we don't provide this type of pizza")
-                    pizza = input("Enter pizza name: ")
-                size = input("Enter size (12, 15, 18): ")
-                while size not in ["12", "15", "18"]:
-                    print("please choose the available size")
-                    size = input("Enter size (12, 15, 18): ")
-                orderPizza = Pizza(pizza, int(size), 1)
+                orderPizza = setUpPizza()
                 additionalToppings = input(
                     "Do you want additional toppings (y/n)?")
                 if (additionalToppings == "y"):
-                    additionalToppings = []
-                    stillAdding = True
-                    print("Enter 'q' to finish adding toppings")
-                    while (stillAdding):
-                        newTopping = input("topping: ")
-                        while newTopping not in menu["pizza"][
-                            "Toppings"].keys() and newTopping != "q":
-                            print("we don't have this topping")
-                            newTopping = input("topping: ")
-                        if (newTopping == "q"):
-                            stillAdding = False
-                        else:
-                            additionalToppings.append(newTopping)
+                    additionalToppings = setUpTopping()
                     orderPizza.addToppings(additionalToppings)
-                    pizzaQuantity = input("how many would you like: ")
-                    while float(pizzaQuantity) <= 0 or float(pizzaQuantity)%1 != 0.0:
-                        print("invalid quantity, please choose again")
-                        pizzaQuantity = input("how many would you like: ")
-                    orderPizza.changeQuantity(pizzaQuantity)
-                elif additionalToppings == "n":
                     pizzaQuantity = input("how many would you like: ")
                     while float(pizzaQuantity) <= 0 or float(
                             pizzaQuantity) % 1 != 0.0:
                         print("invalid quantity, please choose again")
                         pizzaQuantity = input("how many would you like: ")
+                    orderPizza.changeQuantity(pizzaQuantity)
+                elif additionalToppings == "n":
+                    pizzaQuantity = setUpQuantity()
                     orderPizza.changeQuantity(float(pizzaQuantity))
                 print("item added")
                 order.addItem(orderPizza)
@@ -139,10 +166,7 @@ def processOrderSubmission():
                 while drink not in menu["drinks"].keys():
                     print("we don't have this Drinks, please choose again")
                     drink = input("Enter drink's name: ")
-                drinkQuantity = input("how many would you like: ")
-                while float(drinkQuantity) <= 0 or float(drinkQuantity) % 1 != 0.0:
-                    print("invalid quantity, please choose again")
-                    drinkQuantity = input("how many would you like: ")
+                drinkQuantity = setUpQuantity()
                 orderDrink = Drinks(drink, float(drinkQuantity))
                 order.addItem(orderDrink)
         elif selection == "2":
@@ -150,6 +174,7 @@ def processOrderSubmission():
             still_ordering = False
         else:
             print("invalid selection")
+
 
 def processOrderCancellation():
     headers = {'Content-Type': 'application/json'}
@@ -162,7 +187,7 @@ def processOrderCancellation():
 if __name__ == '__main__':
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
-    #base_url = 'http://127.0.0.1:5000/'
+    # base_url = 'http://127.0.0.1:5000/'
     with open('order/Menu.json') as f:
         menu = json.load(f)
         f.close
