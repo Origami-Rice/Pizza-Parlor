@@ -174,13 +174,33 @@ def processOrderSubmission():
         else:
             print("invalid selection")
 
-
-def processOrderCancellation():
+def processOrderCancellation(): 
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
     order_no = input('''Enter the number of the order you wish to cancel: ''')
     r = requests.get(base_url + "delete/" + order_no)
     print("The order has been deleted.")
+
+def processOrderUpdate(): 
+    headers = {'Content-Type': 'application/json'}
+    base_url = 'https://uoftcsc301a2.herokuapp.com/'
+    order_no = input('''Enter the order number of the order you want to update  ''')
+    r = requests.get(base_url + 'retrieve/' + order_no)
+    json_order_data = json.loads(r.text)
+    order = json.loads(json_order_data)
+    print(order["order_number"]) #for debugging 
+    items = json.loads(order["items"])
+    print(order["items"]) #for debugging
+    counter = 0
+    for item in items:
+        print("Item #" + str(counter + 1) + ": " + str(item))
+        counter = counter + 1 
+    item_no = input('''Which item would you like to update? ''')
+    print("Create a new item to replace: ")
+    #TODO: Create an item to replace the old item, and then modify the "order" variable
+    # to reflect the change
+    # Last checkpoint is just updating the backend with the new order.   
+    
 
 
 if __name__ == '__main__':
@@ -212,7 +232,7 @@ if __name__ == '__main__':
         elif selection == "2":
             processOrderSubmission()
         elif selection == "3":
-            pass
+            processOrderUpdate()
         elif selection == "4":
             processOrderCancellation()
         elif selection == "5":
