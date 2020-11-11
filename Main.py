@@ -84,6 +84,22 @@ def printMenu(menu):
     return
 
 
+def setUpPizzaType():
+    pizza = input("Enter pizza name: ")
+    while not pizza in menu["pizza"]["Type"].keys():
+        print("we don't provide this type of pizza")
+        pizza = input("Enter pizza name: ")
+    return pizza
+
+
+def setUpPizzaSize():
+    size = input("Enter size (12, 15, 18): ")
+    while size not in ["12", "15", "18"]:
+        print("please choose the available size")
+        size = input("Enter size (12, 15, 18): ")
+    return size
+
+
 def setUpPizza():
     pizza = input("Enter pizza name: ")
     while not pizza in menu["pizza"]["Type"].keys():
@@ -95,6 +111,14 @@ def setUpPizza():
         size = input("Enter size (12, 15, 18): ")
     orderPizza = Pizza(pizza, int(size), 1)
     return orderPizza
+
+
+def setUpDrinkType():
+    drink = input("Enter drink's name: ")
+    while drink not in menu["drinks"].keys():
+        print("we don't have this Drinks, please choose again")
+        drink = input("Enter drink's name: ")
+    return drink
 
 
 def setUpTopping():
@@ -149,11 +173,7 @@ def processOrderSubmission():
                 if (additionalToppings == "y"):
                     additionalToppings = setUpTopping()
                     orderPizza.addToppings(additionalToppings)
-                    pizzaQuantity = input("how many would you like: ")
-                    while float(pizzaQuantity) <= 0 or float(
-                            pizzaQuantity) % 1 != 0.0:
-                        print("invalid quantity, please choose again")
-                        pizzaQuantity = input("how many would you like: ")
+                    pizzaQuantity = setUpQuantity()
                     orderPizza.changeQuantity(pizzaQuantity)
                 elif additionalToppings == "n":
                     pizzaQuantity = setUpQuantity()
@@ -174,33 +194,67 @@ def processOrderSubmission():
         else:
             print("invalid selection")
 
-def processOrderCancellation(): 
+
+def processOrderCancellation():
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
     order_no = input('''Enter the number of the order you wish to cancel: ''')
     r = requests.get(base_url + "delete/" + order_no)
     print("The order has been deleted.")
 
-def processOrderUpdate(): 
+
+def processOrderUpdate():
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
     order_no = input('''Enter the order number of the order you want to update  ''')
     r = requests.get(base_url + 'retrieve/' + order_no)
     json_order_data = json.loads(r.text)
     order = json.loads(json_order_data)
-    print(order["order_number"]) #for debugging 
+    print(order["order_number"])  # for debugging
     items = json.loads(order["items"])
-    print(order["items"]) #for debugging
+    print(order["items"])  # for debugging
     counter = 0
     for item in items:
         print("Item #" + str(counter + 1) + ": " + str(item))
-        counter = counter + 1 
+        counter = counter + 1
     item_no = input('''Which item would you like to update? ''')
-    print("Create a new item to replace: ")
-    #TODO: Create an item to replace the old item, and then modify the "order" variable
-    # to reflect the change
-    # Last checkpoint is just updating the backend with the new order.   
-    
+    itemUpdated = items[int(item_no)]
+    if itemUpdated["category"] == "Pizza":
+        newPizza = Pizza(itemUpdated["type"], itemUpdated["size"], itemUpdated["quantity"])
+        typeCheck = input('''do you want to change the Type?
+                        yes or no''')
+        if typeCheck == "yes":
+            newType = setUpPizzaType()
+            newPizza.changeType(newType)
+        sizeCheck = input('''do you want to change the size?
+        yes or no''')
+        if sizeCheck == "yes":
+            newSize = setUpPizzaSize()
+            newPizza.changeSize(newSize)
+        quantityCheck = input('''do you want to change the Quantity?
+                        yes or no''')
+        if quantityCheck == "yes":
+            newQuantity = setUpQuantity()
+            newPizza.changeQuantity(newQuantity)
+        toppinCheck = input('''do you want to change the Topping?
+                                yes or no''')
+        if toppinCheck == "yes":
+            newTopping = setUpTopping()
+            newPizza.changeTopping(newTopping)
+        items[int(item_no)] = newPizza.__dict__
+    else:
+        newDrink = Drinks(itemUpdated["type"], itemUpdated["quantity"])
+        dtypeCheck = input('''do you want to change the type?
+                                yes or no''')
+        if dtypeCheck == "yes":
+            newDrinkType = setUpDrinkType()
+            newDrink.changeType(newDrinkType)
+        dquantityCheck = input('''do you want to change the quantity?
+                                        yes or no''')
+        if dquantityCheck == "yes":
+            newDrinkQuantity = setUpQuantity()
+            newDrink.changeQuantity(newDrinkQuantity)
+        items[int(item_no)] = newDrink.__dict__
 
 
 if __name__ == '__main__':

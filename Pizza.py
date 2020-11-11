@@ -50,6 +50,18 @@ class Pizza:
             newPrice += toppings[i]
         self.price -= (newPrice - orginPrice) * self.quantity
 
+    def changeType(self, type):
+        pizzas = self.menu["pizza"]["Type"]
+        self.topping = pizzas[type][0]
+        if self.size == 12:
+            self.price = pizzas[type][1]
+        elif self.size == 15:
+            self.price = pizzas[type][2]
+        else:
+            self.price = pizzas[type][3]
+        self.price = self.price * self.quantity
+
+
     def getTopping(self):
         return self.topping
 
