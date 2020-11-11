@@ -7,6 +7,7 @@ class Drinks:
             f.close
         self.price = menu["drinks"][type] * quantity
         self.quantity = quantity
+        self.category = "Drink"
 
     def jsonif(self):
         jdata = json.dumps(self.__dict__)

@@ -7,6 +7,7 @@ class Pizza:
         self.menu = menu
         self.type = type
         self.size = size
+        self.category = "Pizza"
         self.quantity = quantity
         pizzas = menu["pizza"]["Type"]
         self.topping = pizzas[type][0]
