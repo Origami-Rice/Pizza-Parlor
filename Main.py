@@ -224,7 +224,7 @@ def processOrderUpdate():
         if item_no == "quit":
             running = False
             break
-        itemUpdated = items[int(item_no)]
+        itemUpdated = items[int(item_no) - 1]
         if itemUpdated["category"] == "Pizza":
             newPizza = Pizza(itemUpdated["type"], itemUpdated["size"], itemUpdated["quantity"])
             typeCheck = input('''do you want to change the Type?
@@ -247,7 +247,7 @@ def processOrderUpdate():
             if toppinCheck == "yes":
                 newTopping = setUpTopping()
                 newPizza.changeTopping(newTopping)
-            items[int(item_no)] = newPizza.__dict__
+            items[int(item_no) - 1] = newPizza.__dict__
         else:
             newDrink = Drinks(itemUpdated["type"], itemUpdated["quantity"])
             dtypeCheck = input('''do you want to change the type?
@@ -260,7 +260,7 @@ def processOrderUpdate():
             if dquantityCheck == "yes":
                 newDrinkQuantity = setUpQuantity()
                 newDrink.changeQuantity(newDrinkQuantity)
-            items[int(item_no)] = newDrink.__dict__
+            items[int(item_no) - 1] = newDrink.__dict__
 
 
 if __name__ == '__main__':
