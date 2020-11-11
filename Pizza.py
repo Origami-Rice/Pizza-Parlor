@@ -4,7 +4,6 @@ class Pizza:
         with open('order/Menu.json') as f:
             menu = json.load(f)
             f.close
-        self.menu = menu
         self.type = type
         self.size = size
         self.category = "Pizza"
@@ -21,8 +20,9 @@ class Pizza:
 
 
     def addToppings(self, topping):
+        menu = self.getMenu()
         self.topping.extend(topping)
-        toppings = self.menu["pizza"]["Toppings"]
+        toppings = menu["pizza"]["Toppings"]
         for i in topping:
             self.price += toppings[i] * self.quantity
 
@@ -30,7 +30,8 @@ class Pizza:
         self.quantity = quantity
 
     def changeSize(self, size):
-        pizzas = self.menu["pizza"]["Type"]
+        menu = self.getMenu()
+        pizzas = menu["pizza"]["Type"]
         if size == 12:
             self.price = pizzas[type][1]
         elif size == 15:
@@ -40,9 +41,10 @@ class Pizza:
         self.price = self.price * self.quantity
 
     def changeTopping(self, topping):
+        menu = self.getMenu()
         self.topping = topping
         orginPrice = 0
-        toppings = self.menu["pizza"]["Toppings"]
+        toppings = menu["pizza"]["Toppings"]
         for i in self.topping:
             orginPrice += toppings[i]
         newPrice = 0
@@ -51,7 +53,8 @@ class Pizza:
         self.price -= (newPrice - orginPrice) * self.quantity
 
     def changeType(self, type):
-        pizzas = self.menu["pizza"]["Type"]
+        menu = self.getMenu()
+        pizzas = menu["pizza"]["Type"]
         self.topping = pizzas[type][0]
         if self.size == 12:
             self.price = pizzas[type][1]
@@ -67,6 +70,13 @@ class Pizza:
 
     def getPrice(self):
         return self.price
+
+    def getMenu(self):
+        with open('order/Menu.json') as f:
+            menu = json.load(f)
+            f.close
+        return menu
+
 
 
 

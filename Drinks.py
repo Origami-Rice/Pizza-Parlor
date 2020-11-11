@@ -5,7 +5,6 @@ class Drinks:
         with open('order/Menu.json') as f:
             menu = json.load(f)
             f.close
-        self.menu = menu
         self.price = menu["drinks"][type] * quantity
         self.quantity = quantity
         self.category = "Drink"
@@ -21,5 +20,13 @@ class Drinks:
         return self.price
 
     def changeType(self, type):
+        menu = self.getMenu()
         self.type = type
-        self.price = self.menu["drinks"][type] * self.quantity
+        self.price = menu["drinks"][type] * self.quantity
+
+    def getMenu(self):
+        with open('order/Menu.json') as f:
+            menu = json.load(f)
+            f.close
+        return menu
+
