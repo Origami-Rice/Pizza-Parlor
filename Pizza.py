@@ -42,7 +42,6 @@ class Pizza(Item):
 
     def changeTopping(self, topping):
         menu = self.getMenu()
-        self.topping = topping
         orginPrice = 0
         toppings = menu["pizza"]["Toppings"]
         for i in self.topping:
@@ -50,7 +49,8 @@ class Pizza(Item):
         newPrice = 0
         for i in topping:
             newPrice += toppings[i]
-        self.price -= (newPrice - orginPrice) * self.quantity
+        self.price -= (orginPrice - newPrice) * self.quantity
+        self.topping = topping
 
     def changeType(self, type):
         menu = self.getMenu()

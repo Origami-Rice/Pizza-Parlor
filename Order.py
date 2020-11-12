@@ -24,8 +24,14 @@ class Order:
     def getTotalPrice(self):
         totalPrice = 0.0
         for i in self.items:
-            totalPrice += i.price * i.quantity
+            totalPrice += i.price
         return totalPrice
+
+    def getOrderNumber(self):
+        return self.order_number
+
+    def getItems(self):
+        return self.items
 
 
 
