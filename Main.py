@@ -108,7 +108,7 @@ def setUpPizzaSize():
 
 
 def setUpPizza():
-    pizza = input("Enter pizza name: ")
+    pizza = input("Enter pizza name(enter custom if you want to make your own pizza): ")
     while not pizza in menu["pizza"]["Type"].keys():
         print("we don't provide this type of pizza")
         pizza = input("Enter pizza name: ")
@@ -186,10 +186,10 @@ def processOrderSubmission():
                     additionalToppings = setUpTopping()
                     orderPizza.addToppings(additionalToppings)
                     pizzaQuantity = setUpQuantity()
-                    orderPizza.changeQuantity(pizzaQuantity)
+                    orderPizza.changeQuantity(int(pizzaQuantity))
                 elif additionalToppings == "n":
                     pizzaQuantity = setUpQuantity()
-                    orderPizza.changeQuantity(float(pizzaQuantity))
+                    orderPizza.changeQuantity(int(pizzaQuantity))
                 print("item added")
                 order.addItem(orderPizza)
             elif itemChoice == "2":
@@ -198,7 +198,7 @@ def processOrderSubmission():
                     print("we don't have this Drinks, please choose again")
                     drink = input("Enter drink's name: ")
                 drinkQuantity = setUpQuantity()
-                orderDrink = Drinks(drink, float(drinkQuantity))
+                orderDrink = Drinks(drink, int(drinkQuantity))
                 order.addItem(orderDrink)
         elif selection == "2":
             submitOrder(order)
