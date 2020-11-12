@@ -86,9 +86,9 @@ def printMenu(menu):
 
 def setUpType(type):
     if type == "Pizza":
-        setUpPizza()
+        return setUpPizza()
     else:
-        setUpDrinkType()
+        return setUpDrinkType()
 
 
 def setUpPizzaType():
@@ -264,6 +264,16 @@ def processOrderUpdate():
                 newitem.changeTopping(newTopping)
         items[int(item_no) - 1] = newitem.__dict__
 
+        jdata = {
+            "order_number": order_no,
+            "items": []
+        }
+        jsonItems = json.dumps(items) 
+        jdata["items"] = jsonItems
+        jsondata = json.dumps(jdata)
+        jsondata = json.dumps(jsondata)
+        r = requests.post(base_url + 'update/' + order_no,
+                    data=jsondata, headers=headers)
 
 
     # if itemUpdated["category"] == "Pizza":

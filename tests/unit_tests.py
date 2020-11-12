@@ -142,33 +142,6 @@ class TestPizzaClass(unittest.TestCase):
                          ["olives", "tomatoes", "olives", "mushrooms"])
         self.assertEqual(pizza.getPrice(), 27.0)
 
-    def test_Pizzainit(self):
-        pizza = Pizza("pepperoni", 12, 2)
-        self.assertEqual(pizza.getPrice(), 20)
-        self.assertEqual(pizza.getQuantity(), 2)
-        self.assertEqual(pizza.getSize(), 12)
-
-    def test_pizzachangeSize(self):
-        pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeSize(15)
-        self.assertEqual(pizza.getSize(), 15)
-        self.assertEqual(pizza.getPrice(), 15)
-
-    def test_pizzaChangeType(self):
-        pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeType("margherita")
-        self.assertEqual(pizza.getType(), "margherita")
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.getPrice(), 11)
-
-
-
-
-
-
-
-
-
 class TestDrinksClass(unittest.TestCase):
 
     def test_init(self):
