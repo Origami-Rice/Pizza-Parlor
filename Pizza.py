@@ -1,5 +1,8 @@
 import json
-class Pizza:
+from Item import Item
+
+
+class Pizza(Item):
     def __init__(self, type, size, quantity):
         with open('order/Menu.json') as f:
             menu = json.load(f)
@@ -18,16 +21,12 @@ class Pizza:
             self.price = pizzas[type][3]
         self.price = self.price * quantity
 
-
     def addToppings(self, topping):
         menu = self.getMenu()
         self.topping.extend(topping)
         toppings = menu["pizza"]["Toppings"]
         for i in topping:
             self.price += toppings[i] * self.quantity
-
-    def changeQuantity(self, quantity):
-        self.quantity = quantity
 
     def changeSize(self, size):
         menu = self.getMenu()
@@ -64,25 +63,5 @@ class Pizza:
             self.price = pizzas[type][3]
         self.price = self.price * self.quantity
 
-
     def getTopping(self):
         return self.topping
-
-    def getPrice(self):
-        return self.price
-
-    def getMenu(self):
-        with open('order/Menu.json') as f:
-            menu = json.load(f)
-            f.close
-        return menu
-
-
-
-
-
-
-
-
-
-
