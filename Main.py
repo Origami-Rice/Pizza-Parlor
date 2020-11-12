@@ -84,6 +84,13 @@ def printMenu(menu):
     return
 
 
+def setUpType(type):
+    if type == "Pizza":
+        setUpPizza()
+    else:
+        setUpDrinkType()
+
+
 def setUpPizzaType():
     pizza = input("Enter pizza name: ")
     while not pizza in menu["pizza"]["Type"].keys():
@@ -111,6 +118,11 @@ def setUpPizza():
         size = input("Enter size (12, 15, 18): ")
     orderPizza = Pizza(pizza, int(size), 1)
     return orderPizza
+
+
+def userInput(question):
+    userinput = input(question)
+    return userinput
 
 
 def setUpDrinkType():
@@ -226,41 +238,70 @@ def processOrderUpdate():
             break
         itemUpdated = items[int(item_no) - 1]
         if itemUpdated["category"] == "Pizza":
-            newPizza = Pizza(itemUpdated["type"], itemUpdated["size"], itemUpdated["quantity"])
-            typeCheck = input('''do you want to change the Type?
+            newitem = Pizza(itemUpdated["type"], itemUpdated["size"], itemUpdated["quantity"])
+        else:
+            newitem = Drinks(itemUpdated["type"], itemUpdated["quantity"])
+        typeCheck = input('''do you want to change the Type?
                             yes or no''')
-            if typeCheck == "yes":
-                newType = setUpPizzaType()
-                newPizza.changeType(newType)
+        if typeCheck == "yes":
+            newType = setUpType(itemUpdated["category"])
+            newitem.changeType(newType)
+        quantityCheck = input('''do you want to change the Quantity?
+                                    yes or no''')
+        if quantityCheck == "yes":
+            newQuantity = setUpQuantity()
+            newitem.changeQuantity(newQuantity)
+        if itemUpdated["category"] == "Pizza":
             sizeCheck = input('''do you want to change the size?
-            yes or no''')
+                yes or no''')
             if sizeCheck == "yes":
                 newSize = setUpPizzaSize()
-                newPizza.changeSize(newSize)
-            quantityCheck = input('''do you want to change the Quantity?
-                            yes or no''')
-            if quantityCheck == "yes":
-                newQuantity = setUpQuantity()
-                newPizza.changeQuantity(newQuantity)
+                newitem.changeSize(newSize)
             toppinCheck = input('''do you want to change the Topping?
-                                    yes or no''')
+                                        yes or no''')
             if toppinCheck == "yes":
                 newTopping = setUpTopping()
-                newPizza.changeTopping(newTopping)
-            items[int(item_no) - 1] = newPizza.__dict__
-        else:
-            newDrink = Drinks(itemUpdated["type"], itemUpdated["quantity"])
-            dtypeCheck = input('''do you want to change the type?
-                                    yes or no''')
-            if dtypeCheck == "yes":
-                newDrinkType = setUpDrinkType()
-                newDrink.changeType(newDrinkType)
-            dquantityCheck = input('''do you want to change the quantity?
-                                            yes or no''')
-            if dquantityCheck == "yes":
-                newDrinkQuantity = setUpQuantity()
-                newDrink.changeQuantity(newDrinkQuantity)
-            items[int(item_no) - 1] = newDrink.__dict__
+                newitem.changeTopping(newTopping)
+        items[int(item_no) - 1] = newitem.__dict__
+
+
+
+    # if itemUpdated["category"] == "Pizza":
+    #     newPizza = Pizza(itemUpdated["type"], itemUpdated["size"], itemUpdated["quantity"])
+    #     typeCheck = input('''do you want to change the Type?
+    #                     yes or no''')
+    #     if typeCheck == "yes":
+    #         newType = setUpPizzaType()
+    #         newPizza.changeType(newType)
+    #     sizeCheck = input('''do you want to change the size?
+    #     yes or no''')
+    #     if sizeCheck == "yes":
+    #         newSize = setUpPizzaSize()
+    #         newPizza.changeSize(newSize)
+    #     quantityCheck = input('''do you want to change the Quantity?
+    #                     yes or no''')
+    #     if quantityCheck == "yes":
+    #         newQuantity = setUpQuantity()
+    #         newPizza.changeQuantity(newQuantity)
+    #     toppinCheck = input('''do you want to change the Topping?
+    #                             yes or no''')
+    #     if toppinCheck == "yes":
+    #         newTopping = setUpTopping()
+    #         newPizza.changeTopping(newTopping)
+    #     items[int(item_no) - 1] = newPizza.__dict__
+    # else:
+    #     newDrink = Drinks(itemUpdated["type"], itemUpdated["quantity"])
+    #     dtypeCheck = input('''do you want to change the type?
+    #                             yes or no''')
+    #     if dtypeCheck == "yes":
+    #         newDrinkType = setUpDrinkType()
+    #         newDrink.changeType(newDrinkType)
+    #     dquantityCheck = input('''do you want to change the quantity?
+    #                                     yes or no''')
+    #     if dquantityCheck == "yes":
+    #         newDrinkQuantity = setUpQuantity()
+    #         newDrink.changeQuantity(newDrinkQuantity)
+    #     items[int(item_no) - 1] = newDrink.__dict__
 
 
 if __name__ == '__main__':
