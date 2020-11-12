@@ -4,6 +4,7 @@ import json
 class Item:
     def changeQuantity(self, quantity):
         self.quantity = quantity
+        self.price = self.price * quantity
 
     def getPrice(self):
         return self.price
