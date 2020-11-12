@@ -30,13 +30,14 @@ class Pizza(Item):
 
     def changeSize(self, size):
         menu = self.getMenu()
+        self.size = size
         pizzas = menu["pizza"]["Type"]
         if size == 12:
-            self.price = pizzas[type][1]
+            self.price = pizzas[self.type][1]
         elif size == 15:
-            self.price = pizzas[type][2]
+            self.price = pizzas[self.type][2]
         else:
-            self.price = pizzas[type][3]
+            self.price = pizzas[self.type][3]
         self.price = self.price * self.quantity
 
     def changeTopping(self, topping):
@@ -53,6 +54,7 @@ class Pizza(Item):
 
     def changeType(self, type):
         menu = self.getMenu()
+        self.type = type
         pizzas = menu["pizza"]["Type"]
         self.topping = pizzas[type][0]
         if self.size == 12:
@@ -65,3 +67,6 @@ class Pizza(Item):
 
     def getTopping(self):
         return self.topping
+
+    def getSize(self):
+        return self.size

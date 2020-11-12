@@ -19,3 +19,6 @@ class Item:
 
     def changeType(self, type):
         raise NotImplementedError
+
+    def getType(self):
+        return self.type
