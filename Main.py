@@ -250,7 +250,7 @@ def processOrderUpdate():
                                     yes or no''')
         if quantityCheck == "yes":
             newQuantity = setUpQuantity()
-            newitem.changeQuantity(newQuantity)
+            newitem.changeQuantity(int(newQuantity))
         if itemUpdated["category"] == "Pizza":
             sizeCheck = input('''do you want to change the size?
                 yes or no''')

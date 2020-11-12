@@ -63,7 +63,7 @@ class Pizza(Item):
             self.price = pizzas[type][2]
         else:
             self.price = pizzas[type][3]
-        self.price = self.price * self.quantity
+        self.price = self.getPrice() * self.getQuantity()
 
     def getTopping(self):
         return self.topping
