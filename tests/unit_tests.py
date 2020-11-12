@@ -211,8 +211,6 @@ class TestPizzaClass(unittest.TestCase):
         self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
         self.assertEqual(pizza.getPrice(), 20)
 
-
-
     def test_pizzaChangeTypeMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
         pizza.changeType("margherita")
@@ -353,6 +351,10 @@ class TestDrinksClass(unittest.TestCase):
         drink.changeQuantity(2)
         self.assertEqual(drink.getPrice(), 5)
 
+    def test_drinkGetType(self):
+        drink = Drinks("Coke", 1)
+        self.assertEqual(drink.getType(), "Coke")
+
 
 class TestOrderClass(unittest.TestCase):
 
@@ -393,4 +395,5 @@ class TestOrderClass(unittest.TestCase):
         drink = Drinks("Coke", 1)
         order = Order(1)
         order.addItem(drink)
-        self.assertEqual(order.jsonify(), '{"order_number": 1, "items": "[{\\"type\\": \\"Coke\\", \\"price\\": 2.5, \\"quantity\\": 1, \\"category\\": \\"Drink\\"}]"}')
+        self.assertEqual(order.jsonify(),
+                         '{"order_number": 1, "items": "[{\\"type\\": \\"Coke\\", \\"price\\": 2.5, \\"quantity\\": 1, \\"category\\": \\"Drink\\"}]"}')
