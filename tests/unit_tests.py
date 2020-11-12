@@ -107,6 +107,27 @@ class TestPizzaClass(unittest.TestCase):
         self.assertEqual(pizza.getType(), "pepperoni")
         self.assertEqual(pizza.getQuantity(), 1)
 
+    def test_initMidPizza(self):
+        pizza = Pizza("pepperoni", 15, 1)
+        self.assertEqual(pizza.getPrice(), 15)
+        self.assertEqual(pizza.getSize(), 15)
+        self.assertEqual(pizza.getType(), "pepperoni")
+        self.assertEqual(pizza.getQuantity(), 1)
+
+    def test_initLargePizza(self):
+        pizza = Pizza("pepperoni", 18, 1)
+        self.assertEqual(pizza.getPrice(), 20)
+        self.assertEqual(pizza.getSize(), 18)
+        self.assertEqual(pizza.getType(), "pepperoni")
+        self.assertEqual(pizza.getQuantity(), 1)
+
+    def test_initMultipleQuantity(self):
+        pizza = Pizza("pepperoni", 12, 2)
+        self.assertEqual(pizza.getPrice(), 20)
+        self.assertEqual(pizza.getSize(), 12)
+        self.assertEqual(pizza.getType(), "pepperoni")
+        self.assertEqual(pizza.getQuantity(), 2)
+
     def test_addEmptyTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
         pizza.addToppings([])
@@ -145,11 +166,23 @@ class TestPizzaClass(unittest.TestCase):
                          ["olives", "tomatoes", "olives", "mushrooms"])
         self.assertEqual(pizza.getPrice(), 27.0)
 
-    def test_pizzachangeSize(self):
+    def test_pizzachangeSizeToMid(self):
         pizza = Pizza("pepperoni", 12, 1)
         pizza.changeSize(15)
         self.assertEqual(pizza.getSize(), 15)
         self.assertEqual(pizza.getPrice(), 15)
+
+    def test_pizzachangeSizeToSmall(self):
+        pizza = Pizza("pepperoni", 15, 1)
+        pizza.changeSize(12)
+        self.assertEqual(pizza.getSize(), 12)
+        self.assertEqual(pizza.getPrice(), 10)
+
+    def test_pizzachangeSizeToLarge(self):
+        pizza = Pizza("pepperoni", 12, 1)
+        pizza.changeSize(18)
+        self.assertEqual(pizza.getSize(), 18)
+        self.assertEqual(pizza.getPrice(), 20)
 
     def test_pizzachangeSizeMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
@@ -157,12 +190,28 @@ class TestPizzaClass(unittest.TestCase):
         self.assertEqual(pizza.getSize(), 15)
         self.assertEqual(pizza.getPrice(), 30)
 
-    def test_pizzaChangeType(self):
+    def test_SmallpizzaChangeType(self):
         pizza = Pizza("pepperoni", 12, 1)
         pizza.changeType("margherita")
         self.assertEqual(pizza.getType(), "margherita")
         self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
         self.assertEqual(pizza.getPrice(), 11)
+
+    def test_MidpizzaChangeType(self):
+        pizza = Pizza("pepperoni", 15, 1)
+        pizza.changeType("margherita")
+        self.assertEqual(pizza.getType(), "margherita")
+        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.getPrice(), 15)
+
+    def test_LargepizzaChangeType(self):
+        pizza = Pizza("pepperoni", 18, 1)
+        pizza.changeType("margherita")
+        self.assertEqual(pizza.getType(), "margherita")
+        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.getPrice(), 20)
+
+
 
     def test_pizzaChangeTypeMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
@@ -183,11 +232,17 @@ class TestPizzaClass(unittest.TestCase):
         pizza = Pizza("pepperoni", 12, 1)
         self.assertEqual(pizza.getSize(), 12)
 
-    def test_pizzaChangeTopping(self):
+    def test_pizzaChangeToLessTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
         pizza.changeTopping(["olives"])
         self.assertEqual(pizza.getTopping(), ["olives"])
         self.assertEqual(pizza.getPrice(), 8)
+
+    def test_pizzaChangeToMoreTopping(self):
+        pizza = Pizza("pepperoni", 12, 1)
+        pizza.changeTopping(["olives", "tomatoes", "chicken"])
+        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes", "chicken"])
+        self.assertEqual(pizza.getPrice(), 15)
 
     def test_pizzaChangeQuantity(self):
         pizza = Pizza("pepperoni", 12, 1)
@@ -251,6 +306,12 @@ class TestPizzaClass(unittest.TestCase):
                         10,
                         15,
                         20
+                    ],
+                    "custom": [
+                        [],
+                        5,
+                        10,
+                        15
                     ]
                 },
                 "Toppings": {
