@@ -2,7 +2,8 @@ import requests
 import json
 from Pizza import Pizza
 from Order import Order
-from Drinks import Drinks 
+from Drinks import Drinks
+import pandas as pd
 
 def submitOrder(order):
     if order.items != []:
@@ -302,6 +303,10 @@ def uberDelivery(order, order_number, address):
 def foodoraDelivery(order, order_number, address):
     print('Foodora has delivered the following order: ')
     delivery = getDeliveryAsJson(order, order_number, address)
+    pandashah = pd.read_json(delivery, typ='series')
+    print(pandashah.to_csv())
+
+
 
 def sendDelivery(deliverMethod, order, order_number, address):
     order_details = json.loads(order["items"])
