@@ -3,6 +3,7 @@ from PizzaParlour import app
 from Main import *
 import io
 import sys
+import mock
 
 
 def test_pizza():
@@ -500,12 +501,23 @@ Juice: $2
 ''')
 
     def test_print_menuhelper2(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
-        printMenuHelper("1")
-        sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
-        self.assertEqual(capturedOutput.getvalue(), '''--------------------------Menu--------------------------
+        with mock.patch('builtins.input', return_value="Coke"):
+            capturedOutput = io.StringIO()
+            sys.stdout = capturedOutput
+            printMenuHelper("2")
+            sys.stdout = sys.__stdout__
+            a = capturedOutput.getvalue()
+            self.assertEqual(capturedOutput.getvalue(), '''Coke price is $2.5
+''')
+
+    def test_print_menu(self):
+        with mock.patch('builtins.input', return_value="1"):
+            capturedOutput = io.StringIO()
+            sys.stdout = capturedOutput
+            printMenu()
+            sys.stdout = sys.__stdout__
+            a = capturedOutput.getvalue()
+            self.assertEqual(capturedOutput.getvalue(), '''--------------------------Menu--------------------------
 Pizzas:
 pepperoni Small: $10 Medium: $15 Large: $20
 margherita Small: $11 Medium: $15 Large: $20
@@ -523,5 +535,43 @@ Water: $1
 Juice: $2
 ''')
 
+    def test_setup_drink(self):
+        with mock.patch('builtins.input', return_value="Coke"):
+            a = setUpDrinkType()
+            self.assertEqual(setUpDrinkType(), 'Coke')
+
+    def test_order_cancel(self):
+        with mock.patch('builtins.input', return_value="1026"):
+            capturedOutput = io.StringIO()
+            sys.stdout = capturedOutput
+            processOrderCancellation()
+            sys.stdout = sys.__stdout__
+            a = capturedOutput.getvalue()
+            self.assertEqual(capturedOutput.getvalue(), '''The order has been deleted.
+''')
 
 
+    def test_print_mainmenu_option(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        printMainMenuOptions()
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''Select a number for the action you would like to do: 
+        1. Access the menu  
+        2. Submit an order
+        3. Update an existing order 
+        4. Cancel an order
+        5. Call for delivery/pickup. 
+        6. Quit 
+        
+''')
+
+
+    def test_process_ordersubmit(self):
+        with mock.patch('builtins.input', return_value="2"):
+            capturedOutput = io.StringIO()
+            sys.stdout = capturedOutput
+            processOrderSubmission()
+            sys.stdout = sys.__stdout__
+            self.assertEqual(capturedOutput.getvalue(), '''can't submit empty order\n''')
