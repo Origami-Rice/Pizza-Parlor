@@ -1,10 +1,12 @@
 # PizzaParlour
 
-Foobar is a Python library for dealing with word pluralization.
+a command-line interface then support various features for PizzaParlour
 
 ## Installation
+```bash
+pip3 install -r requirements.txt
+```
 
-follow the requirement.txt, pip3 install them
 
 ## Usage
 
