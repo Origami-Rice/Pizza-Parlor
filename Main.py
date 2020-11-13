@@ -5,7 +5,8 @@ from Order import Order
 from Drinks import Drinks
 
 
-# import pandas as pd
+import pandas as pd
+
 
 def retrieveMenu():
     with open('order/Menu.json') as f:
@@ -67,7 +68,7 @@ def printItemInfo(item_name):
         if (pizza[0] == item_name):
             print(item_name + " pizza prices are $" + str(
                 pizza[1][1]) + " (small), $" + str(pizza[1][2]) + " (medium), $" +
-                  str(pizza[1][3]) + " (large)")
+                str(pizza[1][3]) + " (large)")
             return
     for drink in menu["drinks"].items():
         if (drink[0] == item_name):
@@ -147,7 +148,7 @@ def setUpTopping():
     while (stillAdding):
         newTopping = input("topping: ")
         while newTopping not in menu["pizza"][
-            "Toppings"].keys() and newTopping != "q":
+                "Toppings"].keys() and newTopping != "q":
             print("we don't have this topping")
             newTopping = input("topping: ")
         if (newTopping == "q"):
@@ -328,7 +329,8 @@ def processOrderUpdate():
 
 
 def normalDelivery(order, order_number, address):
-    print('A delivery person has arrived at address "' + address + '" to delivery your order.')
+    print('A delivery person has arrived at address "' +
+          address + '" to delivery your order.')
     print('Order number: ' + order_number)
     print('Order details: ' + str(order))
 
