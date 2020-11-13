@@ -3,16 +3,20 @@ import json
 from Pizza import Pizza
 from Order import Order
 from Drinks import Drinks
-#import pandas as pd
+
+
+# import pandas as pd
 
 def retrieveMenu():
     with open('order/Menu.json') as f:
         menu = json.load(f)
         f.close
-    return menu 
+    return menu
+
 
 def submitOrder(order):
     if order.items != []:
+        headers = {'Content-Type': 'application/json'}
         rsp = requests.post('https://uoftcsc301a2.herokuapp.com/create',
                             json=order.jsonify(), headers=headers)
         if rsp.status_code == 200:
@@ -26,10 +30,13 @@ def submitOrder(order):
             print(
                 "Status of updating order " + order.order_number + ": " + str(
                     rsp.status_code))
+            return 200
         else:
             print("submit failed, please try again")
+            return 404
     else:
         print("can't submit empty order")
+        return "can't submit empty order"
 
 
 def print_pizzas():
@@ -67,6 +74,7 @@ def printItemInfo(item_name):
             print(item_name + " price is $" + str(drink[1]))
             return
 
+
 def printMenuHelper(selection):
     if (selection == "1"):
         print("--------------------------Menu--------------------------")
@@ -75,6 +83,7 @@ def printMenuHelper(selection):
     elif (selection == "2"):
         item = input('''Enter the name of the item you want to find:''')
         printItemInfo(item)
+
 
 def printMenu():
     menu = retrieveMenu()
@@ -160,6 +169,7 @@ def setUpQuantity():
         quantity = input("how many would you like: ")
     return quantity
 
+
 def add_pizza_to_order(order):
     newItem = setUpPizza()
     additionalToppings = input(
@@ -172,6 +182,7 @@ def add_pizza_to_order(order):
     print("item added")
     order.addItem(newItem)
 
+
 def add_drink_to_order(order):
     menu = retrieveMenu()
     drink = input("Enter drink's name: ")
@@ -180,7 +191,8 @@ def add_drink_to_order(order):
         drink = input("Enter drink's name: ")
     drinkQuantity = setUpQuantity()
     newItem = Drinks(drink, int(drinkQuantity))
-    order.addItem(newItem) 
+    order.addItem(newItem)
+
 
 def handle_add_item_request(order):
     print('''which item do you want: 
@@ -191,6 +203,7 @@ def handle_add_item_request(order):
         add_pizza_to_order(order)
     elif itemChoice == "2":
         add_drink_to_order(order)
+
 
 def processOrderSubmission():
     still_ordering = True
@@ -219,20 +232,23 @@ def processOrderCancellation():
     r = requests.get(base_url + "delete/" + order_no)
     print("The order has been deleted.")
 
+
 def initItemToBeUpdated(itemUpdated):
     if itemUpdated["category"] == "Pizza":
         newitem = Pizza(itemUpdated["type"], itemUpdated["size"],
                         itemUpdated["quantity"])
     else:
         newitem = Drinks(itemUpdated["type"], itemUpdated["quantity"])
-    return newitem 
+    return newitem
+
 
 def handleItemTypeUpdate(itemUpdated, newitem):
     typeCheck = input('''do you want to change the Type?
                         yes or no: ''')
     if typeCheck == "yes":
         newType = setUpType(itemUpdated["category"])
-        newitem.changeType(newType) 
+        newitem.changeType(newType)
+
 
 def handleQuantityUpdate(itemUpdated, newitem):
     quantityCheck = input('''do you want to change the Quantity?
@@ -241,6 +257,7 @@ def handleQuantityUpdate(itemUpdated, newitem):
         newQuantity = setUpQuantity()
         newitem.changeQuantity(int(newQuantity))
 
+
 def handleSizeUpdate(itemUpdated, newitem):
     sizeCheck = input('''do you want to change the size?
             yes or no: ''')
@@ -248,12 +265,14 @@ def handleSizeUpdate(itemUpdated, newitem):
         newSize = setUpPizzaSize()
         newitem.changeSize(newSize)
 
+
 def handleToppingCheck(itemUpdated, newitem):
     toppinCheck = input('''do you want to change the Topping?
                                     yes or no: ''')
     if toppinCheck == "yes":
         newTopping = setUpTopping()
         newitem.changeTopping(newTopping)
+
 
 def updateAnItem(items, item_no):
     itemUpdated = items[int(item_no) - 1]
@@ -265,6 +284,7 @@ def updateAnItem(items, item_no):
         handleSizeUpdate(itemUpdated, newitem)
         handleToppingCheck(itemUpdated, newitem)
     items[int(item_no) - 1] = newitem.__dict__
+
 
 def updateOrderInBackend(order_no, items):
     headers = {'Content-Type': 'application/json'}
@@ -278,7 +298,8 @@ def updateOrderInBackend(order_no, items):
     jsondata = json.dumps(jdata)
     jsondata = json.dumps(jsondata)
     r = requests.post(base_url + 'update/' + order_no,
-                        data=jsondata, headers=headers)
+                      data=jsondata, headers=headers)
+
 
 def retrieveOrderAsList(order_no):
     headers = {'Content-Type': 'application/json'}
@@ -287,13 +308,14 @@ def retrieveOrderAsList(order_no):
     json_order_data = json.loads(r.text)
     order = json.loads(json_order_data)
     items = json.loads(order["items"])
-    return items 
+    return items
+
 
 def processOrderUpdate():
     order_no = input(
         '''Enter the order number of the order you want to update  ''')
-    items = retrieveOrderAsList(order_no) 
-    
+    items = retrieveOrderAsList(order_no)
+
     counter = 0
     for item in items:
         print("Item #" + str(counter + 1) + ": " + str(item))
@@ -304,7 +326,7 @@ def processOrderUpdate():
         Enter an item number, or enter "quit" to exit: ''')
         if item_no == "quit":
             running = False
-        else: 
+        else:
             updateAnItem(items, item_no)
             updateOrderInBackend(order_no, items)
 
@@ -339,7 +361,6 @@ def foodoraDelivery(order, order_number, address):
     print(pandashah.to_csv())
 
 
-
 def sendDelivery(deliverMethod, order, order_number, address):
     order_details = json.loads(order["items"])
     if deliverMethod == "1":
@@ -367,6 +388,7 @@ def orderDelivery():
     Enter a number: ''')
     sendDelivery(deliveryMethod, order, order_no, address)
 
+
 def printMainMenuOptions():
     print('''Select a number for the action you would like to do: 
         1. Access the menu  
@@ -376,6 +398,7 @@ def printMainMenuOptions():
         5. Call for delivery/pickup. 
         6. Quit 
         ''')
+
 
 def processMainMenuSelection(selection):
     if selection == "1":
@@ -391,6 +414,7 @@ def processMainMenuSelection(selection):
     else:
         print("invalid selection")
 
+
 if __name__ == '__main__':
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -402,6 +426,5 @@ if __name__ == '__main__':
         selection = input("Make your selection: ")
         if selection == "6":
             running = False
-        else: 
+        else:
             processMainMenuSelection(selection)
-        

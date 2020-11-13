@@ -1,9 +1,8 @@
 import unittest
 from PizzaParlour import app
-import json
-from Pizza import Pizza
-from Drinks import Drinks
-from Order import Order
+from Main import *
+import io
+import sys
 
 
 def test_pizza():
@@ -397,3 +396,132 @@ class TestOrderClass(unittest.TestCase):
         order.addItem(drink)
         self.assertEqual(order.jsonify(),
                          '{"order_number": 1, "items": "[{\\"type\\": \\"Coke\\", \\"price\\": 2.5, \\"quantity\\": 1, \\"category\\": \\"Drink\\"}]"}')
+
+
+class test_main_file(unittest.TestCase):
+
+    def test_submit_emptyorder(self):
+        order = Order(1)
+        self.assertEqual(submitOrder(order), "can't submit empty order")
+
+    def test_submit_order(self):
+        drink = Drinks("Coke", 1)
+        pizza = Pizza("pepperoni", 12, 2)
+        order = Order(1)
+        order.addItem(drink)
+        order.addItem(pizza)
+        self.assertEqual(submitOrder(order), 200)
+
+    def test_print_pizza(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        print_pizzas()
+        sys.stdout = sys.__stdout__
+        self.assertEqual(capturedOutput.getvalue(), '''Pizzas:
+pepperoni Small: $10 Medium: $15 Large: $20
+margherita Small: $11 Medium: $15 Large: $20
+vegetarian Small: $10 Medium: $15 Large: $20
+Neapolitan Small: $10 Medium: $15 Large: $20
+custom Small: $5 Medium: $10 Large: $15
+''')
+
+    def test_print_drinks(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        print_drinks()
+        sys.stdout = sys.__stdout__
+        self.assertEqual(capturedOutput.getvalue(), '''Drinks:
+Coke: $2.5
+Diet Coke: $3
+Coke Zero: $3
+Pepsi: $2.5
+Diet Pepsi: $3
+Dr. Pepper: $4
+Water: $1
+Juice: $2
+''')
+
+    def test_print_topping(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        print_toppings()
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''Toppings:
+olives: $2
+tomatoes: $2
+mushrooms: $1.5
+jalapenos: $2
+chicken: $5
+beef: $6
+pepperoni: $6
+''')
+
+    def test_print_iteminfo_drink(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        printItemInfo("Coke")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''Coke price is $2.5
+''')
+
+    def test_print_iteminfo_pizza(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        printItemInfo("pepperoni")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''pepperoni pizza prices are $10 (small), $15 (medium), $20 (large)
+''')
+
+    def test_print_menuhelper1(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        printMenuHelper("1")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''--------------------------Menu--------------------------
+Pizzas:
+pepperoni Small: $10 Medium: $15 Large: $20
+margherita Small: $11 Medium: $15 Large: $20
+vegetarian Small: $10 Medium: $15 Large: $20
+Neapolitan Small: $10 Medium: $15 Large: $20
+custom Small: $5 Medium: $10 Large: $15
+Drinks:
+Coke: $2.5
+Diet Coke: $3
+Coke Zero: $3
+Pepsi: $2.5
+Diet Pepsi: $3
+Dr. Pepper: $4
+Water: $1
+Juice: $2
+''')
+
+    def test_print_menuhelper2(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        printMenuHelper("1")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''--------------------------Menu--------------------------
+Pizzas:
+pepperoni Small: $10 Medium: $15 Large: $20
+margherita Small: $11 Medium: $15 Large: $20
+vegetarian Small: $10 Medium: $15 Large: $20
+Neapolitan Small: $10 Medium: $15 Large: $20
+custom Small: $5 Medium: $10 Large: $15
+Drinks:
+Coke: $2.5
+Diet Coke: $3
+Coke Zero: $3
+Pepsi: $2.5
+Diet Pepsi: $3
+Dr. Pepper: $4
+Water: $1
+Juice: $2
+''')
+
+
+
