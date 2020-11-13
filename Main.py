@@ -3,8 +3,13 @@ import json
 from Pizza import Pizza
 from Order import Order
 from Drinks import Drinks
-import pandas as pd
+#import pandas as pd
 
+def retrieveMenu():
+    with open('order/Menu.json') as f:
+        menu = json.load(f)
+        f.close
+    return menu 
 
 def submitOrder(order):
     if order.items != []:
@@ -27,62 +32,57 @@ def submitOrder(order):
         print("can't submit empty order")
 
 
-""" def find_last_order_no():
-    with open('order/last_order_no', 'r') as f:
-        last_no = f.readline()
-        new_no = int(last_no) + 1
-        f.close()
-
-    with open('order/last_order_no', 'w') as f:
-        f.write(str(new_no))
-    return str(new_no) """
-
-
-def print_pizzas(menu):
+def print_pizzas():
+    menu = retrieveMenu()
     print("Pizzas:")
     for pizza in menu["pizza"]["Type"].items():
         print(pizza[0] + " Small: $" + str(pizza[1][1]) + " Medium: $" + str(
             pizza[1][2]) + " Large: $" + str(pizza[1][3]))
 
 
-def print_drinks(menu):
+def print_drinks():
+    menu = retrieveMenu()
     print("Drinks:")
     for drink in menu["drinks"].items():
         print(drink[0] + ": $" + str(drink[1]))
 
 
-def print_toppings(menu):
+def print_toppings():
+    menu = retrieveMenu()
     print("Toppings:")
     for topping in menu["pizza"]["Toppings"].items():
         print(topping[0] + ": $" + str(topping[1]))
 
 
-def printItemInfo(item_name, menu):
+def printItemInfo(item_name):
+    menu = retrieveMenu()
     for pizza in menu["pizza"]["Type"].items():
         if (pizza[0] == item_name):
             print(item_name + " pizza prices are $" + str(
-                pizza[1][1]) + "(small), $" + str(pizza[1][2]) + "(medium), $" +
-                  str(pizza[1][3]) + "(large)")
+                pizza[1][1]) + " (small), $" + str(pizza[1][2]) + " (medium), $" +
+                  str(pizza[1][3]) + " (large)")
             return
     for drink in menu["drinks"].items():
         if (drink[0] == item_name):
             print(item_name + " price is $" + str(drink[1]))
             return
 
+def printMenuHelper(selection):
+    if (selection == "1"):
+        print("--------------------------Menu--------------------------")
+        print_pizzas()
+        print_drinks()
+    elif (selection == "2"):
+        item = input('''Enter the name of the item you want to find:''')
+        printItemInfo(item)
 
-def printMenu(menu):
+def printMenu():
+    menu = retrieveMenu()
     selection = input('''Select an action:
     1. Print the full menu  
     2. Find the prices of an item on the menu
     Make your selection:  ''')
-    if (selection == "1"):
-        print_pizzas(menu)
-        print_drinks(menu)
-    elif (selection == "2"):
-        item = input('''Enter the name of the item you want to find:''')
-        printItemInfo(item, menu)
-    # print_toppings(menu)
-    return
+    printMenuHelper(selection)
 
 
 def setUpType(type):
@@ -118,8 +118,8 @@ def setUpPizza():
     while size not in ["12", "15", "18"]:
         print("please choose the available size")
         size = input("Enter size (12, 15, 18): ")
-    orderPizza = Pizza(pizza, int(size), 1)
-    return orderPizza
+    newItem = Pizza(pizza, int(size), 1)
+    return newItem
 
 
 def userInput(question):
@@ -153,19 +153,47 @@ def setUpTopping():
 
 
 def setUpQuantity():
-    pizzaQuantity = input("how many would you like: ")
-    while float(pizzaQuantity) <= 0 or float(
-            pizzaQuantity) % 1 != 0.0:
+    quantity = input("how many would you like: ")
+    while float(quantity) <= 0 or float(
+            quantity) % 1 != 0.0:
         print("invalid quantity, please choose again")
-        pizzaQuantity = input("how many would you like: ")
-    return pizzaQuantity
+        quantity = input("how many would you like: ")
+    return quantity
 
+def add_pizza_to_order(order):
+    newItem = setUpPizza()
+    additionalToppings = input(
+        "Do you want additional toppings (y/n)?")
+    if (additionalToppings == "y"):
+        additionalToppings = setUpTopping()
+        newItem.addToppings(additionalToppings)
+    quantity = setUpQuantity()
+    newItem.changeQuantity(int(quantity))
+    print("item added")
+    order.addItem(newItem)
+
+def add_drink_to_order(order):
+    menu = retrieveMenu()
+    drink = input("Enter drink's name: ")
+    while drink not in menu["drinks"].keys():
+        print("we don't have this Drinks, please choose again")
+        drink = input("Enter drink's name: ")
+    drinkQuantity = setUpQuantity()
+    newItem = Drinks(drink, int(drinkQuantity))
+    order.addItem(newItem) 
+
+def handle_add_item_request(order):
+    print('''which item do you want: 
+                1. Pizza.
+                2. Drinks.  ''')
+    itemChoice = input("Make your Choice: ")
+    if itemChoice == "1":
+        add_pizza_to_order(order)
+    elif itemChoice == "2":
+        add_drink_to_order(order)
 
 def processOrderSubmission():
     still_ordering = True
-    with open('order/Menu.json') as f:
-        menu = json.load(f)
-        f.close
     # order = Order(find_last_order_no())
     # order number will be generated by https://uoftcsc301a2.herokuapp.com/create
     # and return to client by a respose. Overhere, we just give a fake number
@@ -176,32 +204,7 @@ def processOrderSubmission():
         2. Submit order.  
         Make your selection:''')
         if selection == "1":
-            print('''which item do you want: 
-                1. Pizza.
-                2. Drinks.  ''')
-            itemChoice = input("Make your Choice: ")
-            if itemChoice == "1":
-                orderPizza = setUpPizza()
-                additionalToppings = input(
-                    "Do you want additional toppings (y/n)?")
-                if (additionalToppings == "y"):
-                    additionalToppings = setUpTopping()
-                    orderPizza.addToppings(additionalToppings)
-                    pizzaQuantity = setUpQuantity()
-                    orderPizza.changeQuantity(int(pizzaQuantity))
-                elif additionalToppings == "n":
-                    pizzaQuantity = setUpQuantity()
-                    orderPizza.changeQuantity(int(pizzaQuantity))
-                print("item added")
-                order.addItem(orderPizza)
-            elif itemChoice == "2":
-                drink = input("Enter drink's name: ")
-                while drink not in menu["drinks"].keys():
-                    print("we don't have this Drinks, please choose again")
-                    drink = input("Enter drink's name: ")
-                drinkQuantity = setUpQuantity()
-                orderDrink = Drinks(drink, int(drinkQuantity))
-                order.addItem(orderDrink)
+            handle_add_item_request(order)
         elif selection == "2":
             submitOrder(order)
             still_ordering = False
@@ -216,18 +219,81 @@ def processOrderCancellation():
     r = requests.get(base_url + "delete/" + order_no)
     print("The order has been deleted.")
 
+def initItemToBeUpdated(itemUpdated):
+    if itemUpdated["category"] == "Pizza":
+        newitem = Pizza(itemUpdated["type"], itemUpdated["size"],
+                        itemUpdated["quantity"])
+    else:
+        newitem = Drinks(itemUpdated["type"], itemUpdated["quantity"])
+    return newitem 
 
-def processOrderUpdate():
+def handleItemTypeUpdate(itemUpdated, newitem):
+    typeCheck = input('''do you want to change the Type?
+                        yes or no: ''')
+    if typeCheck == "yes":
+        newType = setUpType(itemUpdated["category"])
+        newitem.changeType(newType) 
+
+def handleQuantityUpdate(itemUpdated, newitem):
+    quantityCheck = input('''do you want to change the Quantity?
+                                yes or no: ''')
+    if quantityCheck == "yes":
+        newQuantity = setUpQuantity()
+        newitem.changeQuantity(int(newQuantity))
+
+def handleSizeUpdate(itemUpdated, newitem):
+    sizeCheck = input('''do you want to change the size?
+            yes or no: ''')
+    if sizeCheck == "yes":
+        newSize = setUpPizzaSize()
+        newitem.changeSize(newSize)
+
+def handleToppingCheck(itemUpdated, newitem):
+    toppinCheck = input('''do you want to change the Topping?
+                                    yes or no: ''')
+    if toppinCheck == "yes":
+        newTopping = setUpTopping()
+        newitem.changeTopping(newTopping)
+
+def updateAnItem(items, item_no):
+    itemUpdated = items[int(item_no) - 1]
+    newitem = initItemToBeUpdated(itemUpdated)
+
+    handleItemTypeUpdate(itemUpdated, newitem)
+    handleQuantityUpdate(itemUpdated, newitem)
+    if itemUpdated["category"] == "Pizza":
+        handleSizeUpdate(itemUpdated, newitem)
+        handleToppingCheck(itemUpdated, newitem)
+    items[int(item_no) - 1] = newitem.__dict__
+
+def updateOrderInBackend(order_no, items):
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
-    order_no = input(
-        '''Enter the order number of the order you want to update  ''')
+    jdata = {
+        "order_number": order_no,
+        "items": []
+    }
+    jsonItems = json.dumps(items)
+    jdata["items"] = jsonItems
+    jsondata = json.dumps(jdata)
+    jsondata = json.dumps(jsondata)
+    r = requests.post(base_url + 'update/' + order_no,
+                        data=jsondata, headers=headers)
+
+def retrieveOrderAsList(order_no):
+    headers = {'Content-Type': 'application/json'}
+    base_url = 'https://uoftcsc301a2.herokuapp.com/'
     r = requests.get(base_url + 'retrieve/' + order_no)
     json_order_data = json.loads(r.text)
     order = json.loads(json_order_data)
-    print(order["order_number"])  # for debugging
     items = json.loads(order["items"])
-    print(order["items"])  # for debugging
+    return items 
+
+def processOrderUpdate():
+    order_no = input(
+        '''Enter the order number of the order you want to update  ''')
+    items = retrieveOrderAsList(order_no) 
+    
     counter = 0
     for item in items:
         print("Item #" + str(counter + 1) + ": " + str(item))
@@ -235,49 +301,12 @@ def processOrderUpdate():
     running = True
     while running:
         item_no = input('''Which item would you like to update? 
-        enter quit to exit''')
+        Enter an item number, or enter "quit" to exit: ''')
         if item_no == "quit":
             running = False
-            break
-        itemUpdated = items[int(item_no) - 1]
-        if itemUpdated["category"] == "Pizza":
-            newitem = Pizza(itemUpdated["type"], itemUpdated["size"],
-                            itemUpdated["quantity"])
-        else:
-            newitem = Drinks(itemUpdated["type"], itemUpdated["quantity"])
-        typeCheck = input('''do you want to change the Type?
-                            yes or no''')
-        if typeCheck == "yes":
-            newType = setUpType(itemUpdated["category"])
-            newitem.changeType(newType)
-        quantityCheck = input('''do you want to change the Quantity?
-                                    yes or no''')
-        if quantityCheck == "yes":
-            newQuantity = setUpQuantity()
-            newitem.changeQuantity(int(newQuantity))
-        if itemUpdated["category"] == "Pizza":
-            sizeCheck = input('''do you want to change the size?
-                yes or no''')
-            if sizeCheck == "yes":
-                newSize = setUpPizzaSize()
-                newitem.changeSize(newSize)
-            toppinCheck = input('''do you want to change the Topping?
-                                        yes or no''')
-            if toppinCheck == "yes":
-                newTopping = setUpTopping()
-                newitem.changeTopping(newTopping)
-        items[int(item_no) - 1] = newitem.__dict__
-
-        jdata = {
-            "order_number": order_no,
-            "items": []
-        }
-        jsonItems = json.dumps(items)
-        jdata["items"] = jsonItems
-        jsondata = json.dumps(jdata)
-        jsondata = json.dumps(jsondata)
-        r = requests.post(base_url + 'update/' + order_no,
-                          data=jsondata, headers=headers)
+        else: 
+            updateAnItem(items, item_no)
+            updateOrderInBackend(order_no, items)
 
 
 def normalDelivery(order, order_number, address):
@@ -310,6 +339,7 @@ def foodoraDelivery(order, order_number, address):
     print(pandashah.to_csv())
 
 
+
 def sendDelivery(deliverMethod, order, order_number, address):
     order_details = json.loads(order["items"])
     if deliverMethod == "1":
@@ -337,22 +367,8 @@ def orderDelivery():
     Enter a number: ''')
     sendDelivery(deliveryMethod, order, order_no, address)
 
-
-if __name__ == '__main__':
-    headers = {'Content-Type': 'application/json'}
-    base_url = 'https://uoftcsc301a2.herokuapp.com/'
-    # base_url = 'http://127.0.0.1:5000/'
-    with open('order/Menu.json') as f:
-        menu = json.load(f)
-        f.close
-    '''r = requests.post(base_url + 'create_menu', data=json.dumps(menu),
-                       headers=headers)
-    r = requests.get(base_url + 'retrieve/' + 'Menu')
-    print("Response body: " + r.text) '''
-
-    running = True
-    while running:
-        print('''Select a number for the action you would like to do: 
+def printMainMenuOptions():
+    print('''Select a number for the action you would like to do: 
         1. Access the menu  
         2. Submit an order
         3. Update an existing order 
@@ -360,19 +376,32 @@ if __name__ == '__main__':
         5. Call for delivery/pickup. 
         6. Quit 
         ''')
-        selection = input("Make your selection: ")
 
-        if selection == "1":
-            printMenu(menu)
-        elif selection == "2":
-            processOrderSubmission()
-        elif selection == "3":
-            processOrderUpdate()
-        elif selection == "4":
-            processOrderCancellation()
-        elif selection == "5":
-            orderDelivery()
-        elif selection == "6":
+def processMainMenuSelection(selection):
+    if selection == "1":
+        printMenu()
+    elif selection == "2":
+        processOrderSubmission()
+    elif selection == "3":
+        processOrderUpdate()
+    elif selection == "4":
+        processOrderCancellation()
+    elif selection == "5":
+        orderDelivery()
+    else:
+        print("invalid selection")
+
+if __name__ == '__main__':
+    headers = {'Content-Type': 'application/json'}
+    base_url = 'https://uoftcsc301a2.herokuapp.com/'
+    menu = retrieveMenu()
+
+    running = True
+    while running:
+        printMainMenuOptions()
+        selection = input("Make your selection: ")
+        if selection == "6":
             running = False
-        else:
-            print("invalid selection")
+        else: 
+            processMainMenuSelection(selection)
+        
