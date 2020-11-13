@@ -2,8 +2,7 @@ import requests
 import json
 from Pizza import Pizza
 from Order import Order
-from Drinks import Drinks
-
+from Drinks import Drinks 
 
 def submitOrder(order):
     if order.items != []:
@@ -207,22 +206,6 @@ def processOrderSubmission():
         else:
             print("invalid selection")
 
-
-def orderDelivery():
-    headers = {'Content-Type': 'application/json'}
-    base_url = 'https://uoftcsc301a2.herokuapp.com/'
-    order_no = input(
-        '''Enter the order number of the order you want to call delivery  ''')
-    r = requests.get(base_url + 'retrieve/' + order_no)
-    json_order_data = json.loads(r.text)
-    order = json.loads(json_order_data)
-    Order_detail = json.loads(order["items"])
-    Order_number = int(order_no)
-    Address = input(
-        '''Enter the address you wish to deliver the order to  ''')
-
-
-
 def processOrderCancellation():
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -294,6 +277,59 @@ def processOrderUpdate():
                           data=jsondata, headers=headers)
 
 
+
+def normalDelivery(order, order_number, address):
+    print('A delivery person has arrived at address "' + address + '" to delivery your order.')
+    print('Order number: ' + order_number)
+    print('Order details: ' + str(order))
+
+def getDeliveryAsJson(order, order_number, address): 
+    jdata = {
+        "address": address, 
+        "order number": order_number, 
+        "order details": []
+    }
+    order_details = json.loads(order["items"])
+    jsonItems = json.dumps(order_details)
+    jdata["order details"] = jsonItems
+    return json.dumps(jdata)
+
+def uberDelivery(order, order_number, address):
+    print('Uber Eats has delivered the following order: ')
+    jsonDelivery = getDeliveryAsJson(order, order_number, address)
+    print(str(jsonDelivery))
+
+def foodoraDelivery(order, order_number, address):
+    print('Foodora has delivered the following order: ')
+    delivery = getDeliveryAsJson(order, order_number, address)
+
+def sendDelivery(deliverMethod, order, order_number, address):
+    order_details = json.loads(order["items"])
+    if deliverMethod == "1":
+        normalDelivery(order_details, order_number, address) 
+    elif deliverMethod == "2":
+        uberDelivery(order, order_number, address) 
+    elif deliverMethod == "3":
+        foodoraDelivery(order, order_number, address)
+
+def orderDelivery():
+    headers = {'Content-Type': 'application/json'}
+    base_url = 'https://uoftcsc301a2.herokuapp.com/'
+    order_no = input(
+        '''Enter the order number of the order you want to call delivery  ''')
+    r = requests.get(base_url + 'retrieve/' + order_no)
+    json_order_data = json.loads(r.text)
+    order = json.loads(json_order_data)
+    address = input(
+        '''Enter the address you wish to deliver the order to: ''')
+    deliveryMethod = input('''Would you like 
+    1. Pickup (normal output) 
+    2. Uber Eats (json)
+    3. Foodora (csv)
+    Enter a number: ''')
+    sendDelivery(deliveryMethod, order, order_no, address)
+    
+
 if __name__ == '__main__':
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -327,7 +363,7 @@ if __name__ == '__main__':
         elif selection == "4":
             processOrderCancellation()
         elif selection == "5":
-            pass
+            orderDelivery() 
         elif selection == "6":
             running = False
         else:
