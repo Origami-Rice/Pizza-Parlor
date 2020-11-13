@@ -20,8 +20,9 @@ then run the app by
 python3 Main.py
 ```
 
+
 ## Test
 Run the unit tests by
 ```bash
-python3 Main.py
+pytest --cov-report term --cov=. tests/unit_tests.py
 ```
