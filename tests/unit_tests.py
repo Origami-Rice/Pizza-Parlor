@@ -550,7 +550,6 @@ Juice: $2
             self.assertEqual(capturedOutput.getvalue(), '''The order has been deleted.
 ''')
 
-
     def test_print_mainmenu_option(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -567,7 +566,6 @@ Juice: $2
         
 ''')
 
-
     def test_process_ordersubmit(self):
         with mock.patch('builtins.input', return_value="2"):
             capturedOutput = io.StringIO()
@@ -575,3 +573,131 @@ Juice: $2
             processOrderSubmission()
             sys.stdout = sys.__stdout__
             self.assertEqual(capturedOutput.getvalue(), '''can't submit empty order\n''')
+
+    def test_setup_topping(self):
+        with mock.patch('builtins.input', return_value="q"):
+            self.assertEqual(setUpTopping(), [])
+
+    def test_setup_quantity(self):
+        with mock.patch('builtins.input', return_value="3"):
+            self.assertEqual(setUpQuantity(), "3")
+
+    def test_normal_delivery(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        normalDelivery([{'type': 'custom', 'size': 12, 'category': 'Pizza', 'quantity': 1, 'topping': [], 'price': 5}],
+                       "1", "test address")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''A delivery person has arrived at address "test address" to delivery your order.
+Order number: 1
+Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]
+''')
+
+    def test_get_delivery_asjson(self):
+        a = getDeliveryAsJson({'order_number': '1020',
+                               'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                              "3", "test address")
+        self.assertEqual(getDeliveryAsJson({'order_number': '1020',
+                                            'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                                           "3", "test address"),
+                         '{"address": "test address", "order number": "3", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}')
+
+    def test_uberdelivery(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        uberDelivery({'order_number': '1020',
+                      'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                     "1", "test address")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''Uber Eats has delivered the following order: 
+{"address": "test address", "order number": "1", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}
+''')
+
+    def test_foodoraDelivery(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        foodoraDelivery({'order_number': '1020',
+                         'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                        "1", "test address")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\r\naddress,test address\r\norder number,1\r\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\r\n\n')
+
+
+
+    def test_sendD1(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        sendDelivery("1", {'order_number': '1020',
+                         'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'}, "1", "qwe")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''A delivery person has arrived at address "qwe" to delivery your order.
+Order number: 1
+Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]
+''')
+
+
+    def test_sendD2(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        sendDelivery("2", {'order_number': '1020',
+                           'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                     "1", "qwe")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''Uber Eats has delivered the following order: 
+{"address": "qwe", "order number": "1", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}
+''')
+
+    def test_sendD3(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        sendDelivery("3", {'order_number': '1020',
+                           'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                     "1", "qwe")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\r\naddress,qwe\r\norder number,1\r\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\r\n\n')
+
+    def test_setup_pizzatype(self):
+        with mock.patch('builtins.input', return_value="pepperoni"):
+            self.assertEqual(setUpPizzaType(), "pepperoni")
+
+
+    def test_setup_pizzasize(self):
+        with mock.patch('builtins.input', return_value="12"):
+            self.assertEqual(setUpPizzaSize(), "12")
+
+    def test_updateorder_backend(self):
+        self.assertEqual(updateOrderInBackend("1020", []), 200)
+
+
+    def test_retrieve_orderaslist(self):
+        self.assertEqual(retrieveOrderAsList("1051"), [{'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'}])
+
+
+    def test_initItemTobeUpdateDrink(self):
+        newitem = initItemToBeUpdated({'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'})
+        self.assertEqual(newitem.type, "Coke")
+        self.assertEqual(newitem.quantity, 3)
+        self.assertEqual(newitem.price, 7.5)
+
+    def test_initItemTobeUpdatePizza(self):
+        newitem = initItemToBeUpdated({'type': 'pepperoni', 'price': 30, 'quantity': 3, 'category': 'Pizza', 'size': 12})
+        self.assertEqual(newitem.type, "pepperoni")
+        self.assertEqual(newitem.quantity, 3)
+        self.assertEqual(newitem.price, 30)
+
+    def test_processMainMenuSelection(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        processMainMenuSelection("6")
+        sys.stdout = sys.__stdout__
+        a = capturedOutput.getvalue()
+        self.assertEqual(capturedOutput.getvalue(), '''invalid selection
+''')
+
+
