@@ -1,5 +1,25 @@
-# a2-starter
+# PizzaParlour
 
-Run the main Flask module by running `python3 PizzaParlour.py`
+Foobar is a Python library for dealing with word pluralization.
 
-Run unit tests with coverage by running `pytest --cov-report term --cov=. tests/unit_tests.py`
+## Installation
+
+follow the requirement.txt, pip3 install them
+
+## Usage
+
+Run the main Flask module by running
+```bash
+python3 PizzaParlour.py
+```
+
+then run the app by
+```bash
+python3 Main.py
+```
+
+## Test
+Run the unit tests by
+```bash
+python3 Main.py
+```
