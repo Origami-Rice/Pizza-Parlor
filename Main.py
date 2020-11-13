@@ -131,13 +131,9 @@ def setUpPizza():
     return newItem
 
 
-def userInput(question):
-    userinput = input(question)
-    return userinput
-
-
 def setUpDrinkType():
     drink = input("Enter drink's name: ")
+    menu = retrieveMenu()
     while drink not in menu["drinks"].keys():
         print("we don't have this Drinks, please choose again")
         drink = input("Enter drink's name: ")
