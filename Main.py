@@ -5,6 +5,7 @@ from Order import Order
 from Drinks import Drinks
 import pandas as pd
 
+
 def submitOrder(order):
     if order.items != []:
         rsp = requests.post('https://uoftcsc301a2.herokuapp.com/create',
@@ -207,6 +208,7 @@ def processOrderSubmission():
         else:
             print("invalid selection")
 
+
 def processOrderCancellation():
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -278,27 +280,28 @@ def processOrderUpdate():
                           data=jsondata, headers=headers)
 
 
-
 def normalDelivery(order, order_number, address):
     print('A delivery person has arrived at address "' + address + '" to delivery your order.')
     print('Order number: ' + order_number)
     print('Order details: ' + str(order))
 
-def getDeliveryAsJson(order, order_number, address): 
+
+def getDeliveryAsJson(order, order_number, address):
     jdata = {
-        "address": address, 
-        "order number": order_number, 
+        "address": address,
+        "order number": order_number,
         "order details": []
     }
     order_details = json.loads(order["items"])
-    jsonItems = json.dumps(order_details)
-    jdata["order details"] = jsonItems
+    jdata["order details"] = order_details
     return json.dumps(jdata)
+
 
 def uberDelivery(order, order_number, address):
     print('Uber Eats has delivered the following order: ')
     jsonDelivery = getDeliveryAsJson(order, order_number, address)
     print(str(jsonDelivery))
+
 
 def foodoraDelivery(order, order_number, address):
     print('Foodora has delivered the following order: ')
@@ -307,15 +310,15 @@ def foodoraDelivery(order, order_number, address):
     print(pandashah.to_csv())
 
 
-
 def sendDelivery(deliverMethod, order, order_number, address):
     order_details = json.loads(order["items"])
     if deliverMethod == "1":
-        normalDelivery(order_details, order_number, address) 
+        normalDelivery(order_details, order_number, address)
     elif deliverMethod == "2":
-        uberDelivery(order, order_number, address) 
+        uberDelivery(order, order_number, address)
     elif deliverMethod == "3":
         foodoraDelivery(order, order_number, address)
+
 
 def orderDelivery():
     headers = {'Content-Type': 'application/json'}
@@ -333,7 +336,7 @@ def orderDelivery():
     3. Foodora (csv)
     Enter a number: ''')
     sendDelivery(deliveryMethod, order, order_no, address)
-    
+
 
 if __name__ == '__main__':
     headers = {'Content-Type': 'application/json'}
@@ -368,7 +371,7 @@ if __name__ == '__main__':
         elif selection == "4":
             processOrderCancellation()
         elif selection == "5":
-            orderDelivery() 
+            orderDelivery()
         elif selection == "6":
             running = False
         else:
