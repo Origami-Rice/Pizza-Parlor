@@ -595,10 +595,10 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
 ''')
 
     def test_get_delivery_asjson(self):
-        a = get_delivery_as_Json({'order_number': '1020',
+        a = get_delivery_as_json({'order_number': '1020',
                                'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                               "3", "test address")
-        self.assertEqual(get_delivery_as_Json({'order_number': '1020',
+        self.assertEqual(get_delivery_as_json({'order_number': '1020',
                                             'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                                            "3", "test address"),
                          '{"address": "test address", "order number": "3", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}')
@@ -694,7 +694,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
     def test_processMainMenuSelection(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        processMainMenuSelection("6")
+        process_main_menu_selection("6")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''invalid selection
