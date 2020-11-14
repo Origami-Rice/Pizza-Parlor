@@ -35,7 +35,7 @@ pytest --cov-report term --cov=. tests/unit_tests.py
 
 ### Note on test
 
-there are three tests showing as fail, those are the tests that require getting order from server and test, and since we are using heroku, everytime we update our github repo, the order file stored will be deleted, but those three tests are correct when write the test where the order file are not deleted.
+there are three test cases showing fail, those are the tests that require getting order from server and test, and since we are using heroku, everytime we update our github repo, the order file stored will be deleted, but those three tests are correct when the order file are not deleted.
 
 ## Pair Programming 
 The two features that we pair programmed are the update order feature and the pickup/delivery feature. 
