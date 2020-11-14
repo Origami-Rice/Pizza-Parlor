@@ -623,7 +623,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
                         "1", "test address")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
-        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\r\naddress,test address\r\norder number,1\r\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\r\n\n')
+        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\naddress,test address\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
 
 
 
@@ -660,7 +660,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
                      "1", "qwe")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
-        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\r\naddress,qwe\r\norder number,1\r\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\r\n\n')
+        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\naddress,qwe\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
 
     def test_setup_pizzatype(self):
         with mock.patch('builtins.input', return_value="pepperoni"):
