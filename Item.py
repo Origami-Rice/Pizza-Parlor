@@ -8,8 +8,8 @@ class Item:
         self.quantity = quantity
 
     def change_quantity(self, quantity):
+        self.price = (self.price / self.quantity) * quantity
         self.quantity = quantity
-        self.price = self.price * quantity
 
     def get_price(self):
         return self.price

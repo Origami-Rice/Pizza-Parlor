@@ -84,6 +84,7 @@ def print_item_info(item_name):
         if (drink[0] == item_name):
             print(item_name + " price is $" + str(drink[1]))
             return
+    print("Item not found")
 
 # Prints the full menu or prompts for the item name of a specific item whose price(s) is to be printed
 
@@ -358,6 +359,8 @@ def retrieve_order_as_list(order_no):
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
     r = requests.get(base_url + 'retrieve/' + order_no)
+    if r.text == 'ERROR: order - 1 not found!':
+        return
     json_order_data = json.loads(r.text)
     order = json.loads(json_order_data)
     items = json.loads(order["items"])
@@ -371,7 +374,9 @@ def process_order_update():
     order_no = input(
         '''Enter the order number of the order you want to update  ''')
     items = retrieve_order_as_list(order_no)
-
+    if items == None:
+        print("no such order")
+        return
     counter = 0
     for item in items:
         print("Item #" + str(counter + 1) + ": " + str(item))
@@ -449,6 +454,8 @@ def order_delivery():
     order_no = input(
         '''Enter the order number of the order you want to call delivery  ''')
     r = requests.get(base_url + 'retrieve/' + order_no)
+    if r.text == 'ERROR: order - 1 not found!':
+        return
     json_order_data = json.loads(r.text)
     order = json.loads(json_order_data)
     address = input(
