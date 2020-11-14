@@ -93,6 +93,7 @@ def print_menu_helper(selection):
         print("--------------------------Menu--------------------------")
         print_pizzas()
         print_drinks()
+        print("--------------------------------------------------------")
     elif (selection == "2"):
         item = input('''Enter the name of the item you want to find:''')
         print_item_info(item)

@@ -493,6 +493,7 @@ Diet Pepsi: $3
 Dr. Pepper: $4
 Water: $1
 Juice: $2
+--------------------------------------------------------
 ''')
 
     def test_print_menuhelper2(self):
@@ -528,6 +529,7 @@ Diet Pepsi: $3
 Dr. Pepper: $4
 Water: $1
 Juice: $2
+--------------------------------------------------------
 ''')
 
     def test_setup_drink(self):
