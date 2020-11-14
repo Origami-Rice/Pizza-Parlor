@@ -268,11 +268,11 @@ def handleToppingCheck(newitem):
 # Prompts for and handles all possible modification to a given item in a list of items. 
 def updateAnItem(items, item_no):
     item = items[int(item_no) - 1]
-    newitem = initItemToBeUpdated(itemUpdated)
+    newitem = initItemToBeUpdated(item)
 
     handleItemTypeUpdate(item, newitem)
     handleQuantityUpdate(newitem)
-    if itemUpdated["category"] == "Pizza":
+    if item["category"] == "Pizza":
         handleSizeUpdate(newitem)
         handleToppingCheck(newitem)
     items[int(item_no) - 1] = newitem.__dict__
