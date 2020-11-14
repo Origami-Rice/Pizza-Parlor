@@ -6,96 +6,91 @@ import sys
 import mock
 
 
-def test_pizza():
-    response = app.test_client().get('/pizza')
+class leaving_as_itis(unittest.TestCase):
 
-    assert response.status_code == 200
-    assert response.data == b'Welcome to Pizza Planet!'
+    def test_pizza(self):
+        response = app.test_client().get('/pizza')
 
+        assert response.status_code == 200
+        assert response.data == b'Welcome to Pizza Planet!'
 
-def test_create():
-    with open('order/last_order_no', 'r') as f:
-        last_no = f.readline()
-        new_no = int(last_no) + 1
-        order_no = str(new_no)
-        f.close()
-    with app.test_client() as client:
-        # send data as POST form to endpoint
-        sent = {"order_number": "1",
-                "items": [{"type": "pepperoni", "size": 12, "topping": [
-                    "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
-        result = client.post(
-            '/create',
-            data=sent
-        )
-        # check result from server with expected data
-        print(result.data.decode('utf-8'))
-        assert result.data.decode('utf-8') == str(new_no)
+    def test_create(self):
+        with open('order/last_order_no', 'r') as f:
+            last_no = f.readline()
+            new_no = int(last_no) + 1
+            order_no = str(new_no)
+            f.close()
+        with app.test_client() as client:
+            # send data as POST form to endpoint
+            sent = {"order_number": "1",
+                    "items": [{"type": "pepperoni", "size": 12, "topping": [
+                        "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
+            result = client.post(
+                '/create',
+                data=sent
+            )
+            # check result from server with expected data
+            print(result.data.decode('utf-8'))
+            assert result.data.decode('utf-8') == str(new_no)
 
+    def test_retrieve(self):
+        with open('order/last_order_no', 'r') as f:
+            last_no = f.readline()
+            f.close()
+        response = app.test_client().get('/retrieve/' + last_no)
+        print("order_no: " + last_no)
+        assert response.status_code == 200
 
-def test_retrieve():
-    with open('order/last_order_no', 'r') as f:
-        last_no = f.readline()
-        f.close()
-    response = app.test_client().get('/retrieve/' + last_no)
-    print("order_no: " + last_no)
-    assert response.status_code == 200
+    def test_update(self):
+        with open('order/last_order_no', 'r') as f:
+            last_no = f.readline()
+            f.close()
+        with app.test_client() as client:
+            # send data as POST form to endpoint
+            sent = {"order_number": "1",
+                    "items": [{"type": "pepperoni", "size": 12, "topping": [
+                        "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
+            response = client.post(
+                '/update/' + last_no,
+                data=sent
+            )
+        assert response.status_code == 200
+        print(response.data.decode('utf-8'))
+        assert response.data.decode('utf-8') == last_no
 
+    def test_delete(self):
+        with open('order/last_order_no', 'r') as f:
+            last_no = f.readline()
+            f.close()
+        response = app.test_client().get('/delete/' + last_no)
+        assert response.status_code == 200
 
-def test_update():
-    with open('order/last_order_no', 'r') as f:
-        last_no = f.readline()
-        f.close()
-    with app.test_client() as client:
-        # send data as POST form to endpoint
-        sent = {"order_number": "1",
-                "items": [{"type": "pepperoni", "size": 12, "topping": [
-                    "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
-        response = client.post(
-            '/update/' + last_no,
-            data=sent
-        )
-    assert response.status_code == 200
-    print(response.data.decode('utf-8'))
-    assert response.data.decode('utf-8') == last_no
+    def test_delete_not_found(self):
+        response = app.test_client().get('/delete/1000')
+        assert response.status_code == 200
+        print(response.data.decode('utf-8'))
+        assert response.data.decode('utf-8') == "1000"
 
+    def test_retrieve_not_found(self):
+        response = app.test_client().get('/retrieve/1000')
 
-def test_delete():
-    with open('order/last_order_no', 'r') as f:
-        last_no = f.readline()
-        f.close()
-    response = app.test_client().get('/delete/' + last_no)
-    assert response.status_code == 200
+        assert response.status_code == 200
+        print(response.data.decode('utf-8'))
+        assert response.data.decode('utf-8') == "ERROR: order - 1000 not found!"
 
-
-def test_delete_not_found():
-    response = app.test_client().get('/delete/1000')
-    assert response.status_code == 200
-    print(response.data.decode('utf-8'))
-    assert response.data.decode('utf-8') == "1000"
-
-
-def test_retrieve_not_found():
-    response = app.test_client().get('/retrieve/1000')
-
-    assert response.status_code == 200
-    print(response.data.decode('utf-8'))
-    assert response.data.decode('utf-8') == "ERROR: order - 1000 not found!"
-
-
-def test_update_not_found():
-    with app.test_client() as client:
-        # send data as POST form to endpoint
-        sent = {"order_number": "1",
-                "items": [{"type": "pepperoni", "size": 12, "topping": [
-                    "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
-        response = client.post(
-            '/update/1000',
-            data=sent
-        )
-    assert response.status_code == 200
-    print(response.data.decode('utf-8'))
-    assert response.data.decode('utf-8') == "ERROR: order - 1000 not found!"
+    def test_update_not_found(self):
+        with app.test_client() as client:
+            # send data as POST form to endpoint
+            sent = {"order_number": "1",
+                    "items": [{"type": "pepperoni", "size": 12, "topping": [
+                        "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
+            response = client.post(
+                '/update/1000',
+                data=sent
+            )
+        assert response.status_code == 200
+        print(response.data.decode('utf-8'))
+        assert response.data.decode('utf-8') == "ERROR: order - 1000 not found!"
 
 
 class TestPizzaClass(unittest.TestCase):
@@ -586,7 +581,7 @@ Juice: $2
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
         normal_delivery([{'type': 'custom', 'size': 12, 'category': 'Pizza', 'quantity': 1, 'topping': [], 'price': 5}],
-                       "1", "test address")
+                        "1", "test address")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''A delivery person has arrived at address "test address" to delivery your order.
@@ -596,19 +591,19 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
 
     def test_get_delivery_asjson(self):
         a = get_delivery_as_json({'order_number': '1020',
-                               'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
-                              "3", "test address")
+                                  'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                                 "3", "test address")
         self.assertEqual(get_delivery_as_json({'order_number': '1020',
-                                            'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
-                                           "3", "test address"),
+                                               'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                                              "3", "test address"),
                          '{"address": "test address", "order number": "3", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}')
 
     def test_uberdelivery(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
         uber_delivery({'order_number': '1020',
-                      'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
-                     "1", "test address")
+                       'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                      "1", "test address")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''Uber Eats has delivered the following order: 
@@ -619,19 +614,19 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
         foodora_delivery({'order_number': '1020',
-                         'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
-                        "1", "test address")
+                          'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                         "1", "test address")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
-        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\naddress,test address\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
-
-
+        self.assertEqual(capturedOutput.getvalue(),
+                         'Foodora has delivered the following order: \n,0\naddress,test address\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
 
     def test_sendD1(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
         send_delivery("1", {'order_number': '1020',
-                         'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'}, "1", "qwe")
+                            'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                      "1", "qwe")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''A delivery person has arrived at address "qwe" to delivery your order.
@@ -639,13 +634,12 @@ Order number: 1
 Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]
 ''')
 
-
     def test_sendD2(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
         send_delivery("2", {'order_number': '1020',
-                           'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
-                     "1", "qwe")
+                            'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                      "1", "qwe")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''Uber Eats has delivered the following order: 
@@ -656,16 +650,16 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
         send_delivery("3", {'order_number': '1020',
-                           'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
-                     "1", "qwe")
+                            'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
+                      "1", "qwe")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
-        self.assertEqual(capturedOutput.getvalue(), 'Foodora has delivered the following order: \n,0\naddress,qwe\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
+        self.assertEqual(capturedOutput.getvalue(),
+                         'Foodora has delivered the following order: \n,0\naddress,qwe\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
 
     def test_setup_pizzatype(self):
         with mock.patch('builtins.input', return_value="pepperoni"):
             self.assertEqual(setup_pizza_type(), "pepperoni")
-
 
     def test_setup_pizzasize(self):
         with mock.patch('builtins.input', return_value="12"):
@@ -674,10 +668,9 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
     def test_updateorder_backend(self):
         self.assertEqual(update_order_in_backend("1020", []), 200)
 
-
     def test_retrieve_orderaslist(self):
-        self.assertEqual(retrieve_order_as_list("1051"), [{'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'}])
-
+        self.assertEqual(retrieve_order_as_list("1051"),
+                         [{'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'}])
 
     def test_initItemTobeUpdateDrink(self):
         newitem = init_item_to_be_updated({'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'})
@@ -686,7 +679,8 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
         self.assertEqual(newitem.price, 7.5)
 
     def test_initItemTobeUpdatePizza(self):
-        newitem = init_item_to_be_updated({'type': 'pepperoni', 'price': 30, 'quantity': 3, 'category': 'Pizza', 'size': 12})
+        newitem = init_item_to_be_updated(
+            {'type': 'pepperoni', 'price': 30, 'quantity': 3, 'category': 'Pizza', 'size': 12})
         self.assertEqual(newitem.type, "pepperoni")
         self.assertEqual(newitem.quantity, 3)
         self.assertEqual(newitem.price, 30)
@@ -699,5 +693,3 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''invalid selection
 ''')
-
-
