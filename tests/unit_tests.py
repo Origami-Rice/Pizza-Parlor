@@ -403,7 +403,7 @@ class test_main_file(unittest.TestCase):
 
     def test_submit_emptyorder(self):
         order = Order(1)
-        self.assertEqual(submitOrder(order), "can't submit empty order")
+        self.assertEqual(submit_order(order), "can't submit empty order")
 
     def test_submit_order(self):
         drink = Drinks("Coke", 1)
@@ -411,7 +411,7 @@ class test_main_file(unittest.TestCase):
         order = Order(1)
         order.addItem(drink)
         order.addItem(pizza)
-        self.assertEqual(submitOrder(order), 200)
+        self.assertEqual(submit_order(order), 200)
 
     def test_print_pizza(self):
         capturedOutput = io.StringIO()
@@ -461,7 +461,7 @@ pepperoni: $6
     def test_print_iteminfo_drink(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        printItemInfo("Coke")
+        print_item_info("Coke")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''Coke price is $2.5
@@ -470,7 +470,7 @@ pepperoni: $6
     def test_print_iteminfo_pizza(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        printItemInfo("pepperoni")
+        print_item_info("pepperoni")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''pepperoni pizza prices are $10 (small), $15 (medium), $20 (large)
@@ -479,7 +479,7 @@ pepperoni: $6
     def test_print_menuhelper1(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        printMenuHelper("1")
+        print_menu_helper("1")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''--------------------------Menu--------------------------
@@ -504,7 +504,7 @@ Juice: $2
         with mock.patch('builtins.input', return_value="Coke"):
             capturedOutput = io.StringIO()
             sys.stdout = capturedOutput
-            printMenuHelper("2")
+            print_menu_helper("2")
             sys.stdout = sys.__stdout__
             a = capturedOutput.getvalue()
             self.assertEqual(capturedOutput.getvalue(), '''Coke price is $2.5
@@ -514,7 +514,7 @@ Juice: $2
         with mock.patch('builtins.input', return_value="1"):
             capturedOutput = io.StringIO()
             sys.stdout = capturedOutput
-            printMenu()
+            print_menu()
             sys.stdout = sys.__stdout__
             a = capturedOutput.getvalue()
             self.assertEqual(capturedOutput.getvalue(), '''--------------------------Menu--------------------------
@@ -537,14 +537,14 @@ Juice: $2
 
     def test_setup_drink(self):
         with mock.patch('builtins.input', return_value="Coke"):
-            a = setUpDrinkType()
-            self.assertEqual(setUpDrinkType(), 'Coke')
+            a = setup_drink_type()
+            self.assertEqual(setup_drink_type(), 'Coke')
 
     def test_order_cancel(self):
         with mock.patch('builtins.input', return_value="1026"):
             capturedOutput = io.StringIO()
             sys.stdout = capturedOutput
-            processOrderCancellation()
+            process_order_cancellation()
             sys.stdout = sys.__stdout__
             a = capturedOutput.getvalue()
             self.assertEqual(capturedOutput.getvalue(), '''The order has been deleted.
@@ -553,7 +553,7 @@ Juice: $2
     def test_print_mainmenu_option(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        printMainMenuOptions()
+        print_main_menu_options()
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''Select a number for the action you would like to do: 
@@ -570,22 +570,22 @@ Juice: $2
         with mock.patch('builtins.input', return_value="2"):
             capturedOutput = io.StringIO()
             sys.stdout = capturedOutput
-            processOrderSubmission()
+            process_order_submission()
             sys.stdout = sys.__stdout__
             self.assertEqual(capturedOutput.getvalue(), '''can't submit empty order\n''')
 
     def test_setup_topping(self):
         with mock.patch('builtins.input', return_value="q"):
-            self.assertEqual(setUpTopping(), [])
+            self.assertEqual(setup_topping(), [])
 
     def test_setup_quantity(self):
         with mock.patch('builtins.input', return_value="3"):
-            self.assertEqual(setUpQuantity(), "3")
+            self.assertEqual(setup_quantity(), "3")
 
     def test_normal_delivery(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        normalDelivery([{'type': 'custom', 'size': 12, 'category': 'Pizza', 'quantity': 1, 'topping': [], 'price': 5}],
+        normal_delivery([{'type': 'custom', 'size': 12, 'category': 'Pizza', 'quantity': 1, 'topping': [], 'price': 5}],
                        "1", "test address")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
@@ -595,10 +595,10 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
 ''')
 
     def test_get_delivery_asjson(self):
-        a = getDeliveryAsJson({'order_number': '1020',
+        a = get_delivery_as_Json({'order_number': '1020',
                                'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                               "3", "test address")
-        self.assertEqual(getDeliveryAsJson({'order_number': '1020',
+        self.assertEqual(get_delivery_as_Json({'order_number': '1020',
                                             'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                                            "3", "test address"),
                          '{"address": "test address", "order number": "3", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}')
@@ -606,7 +606,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
     def test_uberdelivery(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        uberDelivery({'order_number': '1020',
+        uber_delivery({'order_number': '1020',
                       'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                      "1", "test address")
         sys.stdout = sys.__stdout__
@@ -618,7 +618,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
     def test_foodoraDelivery(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        foodoraDelivery({'order_number': '1020',
+        foodora_delivery({'order_number': '1020',
                          'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                         "1", "test address")
         sys.stdout = sys.__stdout__
@@ -630,7 +630,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
     def test_sendD1(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        sendDelivery("1", {'order_number': '1020',
+        send_delivery("1", {'order_number': '1020',
                          'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'}, "1", "qwe")
         sys.stdout = sys.__stdout__
         a = capturedOutput.getvalue()
@@ -643,7 +643,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
     def test_sendD2(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        sendDelivery("2", {'order_number': '1020',
+        send_delivery("2", {'order_number': '1020',
                            'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                      "1", "qwe")
         sys.stdout = sys.__stdout__
@@ -655,7 +655,7 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
     def test_sendD3(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        sendDelivery("3", {'order_number': '1020',
+        send_delivery("3", {'order_number': '1020',
                            'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                      "1", "qwe")
         sys.stdout = sys.__stdout__
@@ -664,29 +664,29 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
 
     def test_setup_pizzatype(self):
         with mock.patch('builtins.input', return_value="pepperoni"):
-            self.assertEqual(setUpPizzaType(), "pepperoni")
+            self.assertEqual(setup_pizza_type(), "pepperoni")
 
 
     def test_setup_pizzasize(self):
         with mock.patch('builtins.input', return_value="12"):
-            self.assertEqual(setUpPizzaSize(), "12")
+            self.assertEqual(setup_pizza_size(), "12")
 
     def test_updateorder_backend(self):
-        self.assertEqual(updateOrderInBackend("1020", []), 200)
+        self.assertEqual(update_order_in_backend("1020", []), 200)
 
 
     def test_retrieve_orderaslist(self):
-        self.assertEqual(retrieveOrderAsList("1051"), [{'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'}])
+        self.assertEqual(retrieve_order_as_list("1051"), [{'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'}])
 
 
     def test_initItemTobeUpdateDrink(self):
-        newitem = initItemToBeUpdated({'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'})
+        newitem = init_item_to_be_updated({'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'})
         self.assertEqual(newitem.type, "Coke")
         self.assertEqual(newitem.quantity, 3)
         self.assertEqual(newitem.price, 7.5)
 
     def test_initItemTobeUpdatePizza(self):
-        newitem = initItemToBeUpdated({'type': 'pepperoni', 'price': 30, 'quantity': 3, 'category': 'Pizza', 'size': 12})
+        newitem = init_item_to_be_updated({'type': 'pepperoni', 'price': 30, 'quantity': 3, 'category': 'Pizza', 'size': 12})
         self.assertEqual(newitem.type, "pepperoni")
         self.assertEqual(newitem.quantity, 3)
         self.assertEqual(newitem.price, 30)
