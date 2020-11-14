@@ -59,7 +59,7 @@ def retrieve_order(order_no):
     if os.path.exists(order_file_name):
         with open(order_file_name) as f:
             order = json.load(f)
-            f.close
+            f.close()
         return jsonify(order)
     else:
         return "ERROR: order - " + order_no + " not found!"

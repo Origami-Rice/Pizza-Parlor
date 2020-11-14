@@ -2,6 +2,11 @@ import json
 
 
 class Item:
+    def __init__(self, type, quantity):
+        self.type = type
+        self.price = None
+        self.quantity = quantity
+
     def change_quantity(self, quantity):
         self.quantity = quantity
         self.price = self.price * quantity
@@ -12,7 +17,7 @@ class Item:
     def get_menu(self):
         with open('order/Menu.json') as f:
             menu = json.load(f)
-            f.close
+            f.close()
         return menu
 
     def get_quantity(self):

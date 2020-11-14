@@ -11,7 +11,7 @@ import pandas as pd
 def retrieve_menu():
     with open('order/Menu.json') as f:
         menu = json.load(f)
-        f.close
+        f.close()
     return menu
 
 # Takes in an Order object and makes an api call to add it to the back end

@@ -4,13 +4,12 @@ from Item import Item
 
 class Pizza(Item):
     def __init__(self, type, size, quantity):
+        super().__init__(type, quantity)
         with open('order/Menu.json') as f:
             menu = json.load(f)
-            f.close
-        self.type = type
+            f.close()
         self.size = size
         self.category = "Pizza"
-        self.quantity = quantity
         pizzas = menu["pizza"]["Type"]
         self.topping = pizzas[type][0]
         if size == 12:
