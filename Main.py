@@ -3,16 +3,16 @@ import json
 from Pizza import Pizza
 from Order import Order
 from Drinks import Drinks
-#import pandas as pd
+import pandas as pd
 
-# Retrieves the menu from the Menu.json file and returns it as a dictionary 
+# Retrieves the menu from the Menu.json file and returns it as a dictionary
 def retrieveMenu():
     with open('order/Menu.json') as f:
         menu = json.load(f)
         f.close
     return menu
 
-# Takes in an Order object and makes an api call to add it to the back end 
+# Takes in an Order object and makes an api call to add it to the back end
 def submitOrder(order):
     if order.items != []:
         headers = {'Content-Type': 'application/json'}
@@ -45,14 +45,14 @@ def print_pizzas():
         print(pizza[0] + " Small: $" + str(pizza[1][1]) + " Medium: $" + str(
             pizza[1][2]) + " Large: $" + str(pizza[1][3]))
 
-# Prints all the drink types and their associated prices 
+# Prints all the drink types and their associated prices
 def print_drinks():
     menu = retrieveMenu()
     print("Drinks:")
     for drink in menu["drinks"].items():
         print(drink[0] + ": $" + str(drink[1]))
 
-# Prints all the toppings and their associated prices 
+# Prints all the toppings and their associated prices
 def print_toppings():
     menu = retrieveMenu()
     print("Toppings:")
@@ -73,7 +73,7 @@ def printItemInfo(item_name):
             print(item_name + " price is $" + str(drink[1]))
             return
 
-# Prints the full menu or prompts for the item name of a specific item whose price(s) is to be printed 
+# Prints the full menu or prompts for the item name of a specific item whose price(s) is to be printed
 def printMenuHelper(selection):
     if (selection == "1"):
         print("--------------------------Menu--------------------------")
@@ -84,7 +84,7 @@ def printMenuHelper(selection):
         printItemInfo(item)
 
 # Prompts for the menu functionality the user wants, and passes that choice to printMenuHelper()
-# which handles the logic. 
+# which handles the logic.
 def printMenu():
     selection = input('''Select an action:
     1. Print the full menu  
@@ -92,14 +92,14 @@ def printMenu():
     Make your selection: ''')
     printMenuHelper(selection)
 
-# Returns a Pizza object or Drink object depending on the requested type 
+# Returns a Pizza object or Drink object depending on the requested type
 def setUpType(type):
     if type == "Pizza":
         return setUpPizza()
     else:
         return setUpDrinkType()
 
-# Prompts user for a pizza type until they add one which is in the menu 
+# Prompts user for a pizza type until they add one which is in the menu
 def setUpPizzaType():
     menu = retrieveMenu()
     pizza = input("Enter pizza name (enter custom if you want to make your own pizza): ")
@@ -108,7 +108,7 @@ def setUpPizzaType():
         pizza = input("Enter pizza name: ")
     return pizza
 
-# Prompts user for a pizza size until they add one which is valid 
+# Prompts user for a pizza size until they add one which is valid
 def setUpPizzaSize():
     size = input("Enter size (12, 15, 18): ")
     while size not in ["12", "15", "18"]:
@@ -123,7 +123,7 @@ def setUpPizza():
     newItem = Pizza(pizza, int(size), 1)
     return newItem
 
-# Prompts user for a drink type until they enter one which is valid 
+# Prompts user for a drink type until they enter one which is valid
 def setUpDrinkType():
     drink = input("Enter drink's name: ")
     menu = retrieveMenu()
@@ -132,9 +132,10 @@ def setUpDrinkType():
         drink = input("Enter drink's name: ")
     return drink
 
-# Prompts user for the toppings they wish to add to the pizza until they enter "q" to exit. 
-# Returns the list of additional toppings 
+# Prompts user for the toppings they wish to add to the pizza until they enter "q" to exit.
+# Returns the list of additional toppings
 def setUpTopping():
+    menu = retrieveMenu()
     additionalToppings = []
     stillAdding = True
     print("Enter 'q' to finish adding toppings.")
@@ -159,7 +160,7 @@ def setUpQuantity():
         quantity = input("Enter how many would you like: ")
     return quantity
 
-# Sets up a pizza based on user input and adds it to the passed in order. 
+# Sets up a pizza based on user input and adds it to the passed in order.
 def add_pizza_to_order(order):
     newItem = setUpPizza()
     additionalToppings = input(
@@ -172,7 +173,7 @@ def add_pizza_to_order(order):
     print("Item added.")
     order.addItem(newItem)
 
-# Creates a drink based on user input and adds it to the passed in order. 
+# Creates a drink based on user input and adds it to the passed in order.
 def add_drink_to_order(order):
     menu = retrieveMenu()
     drink = input("Enter drink's name: ")
@@ -183,7 +184,7 @@ def add_drink_to_order(order):
     newItem = Drinks(drink, int(drinkQuantity))
     order.addItem(newItem)
 
-# Prompts the user for the type of item they wish to add and adds it to the passed in order. 
+# Prompts the user for the type of item they wish to add and adds it to the passed in order.
 def handle_add_item_request(order):
     print('''which item do you want: 
                 1. Pizza.
@@ -195,7 +196,7 @@ def handle_add_item_request(order):
         add_drink_to_order(order)
 
 # Handles user input for the creation of the order, allowing the user to continuously add items,
-# or, when they decide to submit their order, submits it to the back end. 
+# or, when they decide to submit their order, submits it to the back end.
 def processOrderSubmission():
     still_ordering = True
     # order = Order(find_last_order_no())
@@ -215,7 +216,7 @@ def processOrderSubmission():
         else:
             print("invalid selection")
 
-# Removes the order with the order number sepcified by the user from the back end 
+# Removes the order with the order number sepcified by the user from the back end
 def processOrderCancellation():
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -223,7 +224,7 @@ def processOrderCancellation():
     r = requests.get(base_url + "delete/" + order_no)
     print("The order has been deleted.")
 
-# Creates and returns a copy of the passed in item 
+# Creates and returns a copy of the passed in item
 def initItemToBeUpdated(item):
     if item["category"] == "Pizza":
         newitem = Pizza(item["type"], item["size"],
@@ -241,7 +242,7 @@ def handleItemTypeUpdate(item, newitem):
         newType = setUpType(item["category"])
         newitem.changeType(newType)
 
-# Prompts user for whether they wish to update an item's quantity. 
+# Prompts user for whether they wish to update an item's quantity.
 def handleQuantityUpdate(newitem):
     quantityCheck = input('''Do you want to change the Quantity?
                                 yes or no: ''')
@@ -265,7 +266,7 @@ def handleToppingCheck(newitem):
         newTopping = setUpTopping()
         newitem.changeTopping(newTopping)
 
-# Prompts for and handles all possible modification to a given item in a list of items. 
+# Prompts for and handles all possible modification to a given item in a list of items.
 def updateAnItem(items, item_no):
     item = items[int(item_no) - 1]
     newitem = initItemToBeUpdated(item)
@@ -278,7 +279,7 @@ def updateAnItem(items, item_no):
     items[int(item_no) - 1] = newitem.__dict__
 
 # Creates a new order with the passed in order_no and list of items and makes an api call to
-# have it replace the original order with this order number in the back end. 
+# have it replace the original order with this order number in the back end.
 def updateOrderInBackend(order_no, items):
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -294,7 +295,7 @@ def updateOrderInBackend(order_no, items):
                       data=jsondata, headers=headers)
 
 # Retrieves the order with the given order number from the back end and returns its items
-# as a python list 
+# as a python list
 def retrieveOrderAsList(order_no):
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -304,7 +305,7 @@ def retrieveOrderAsList(order_no):
     items = json.loads(order["items"])
     return items
 
-# Prompts the user for the order number of the order they wish to update as 
+# Prompts the user for the order number of the order they wish to update as
 # well as the items they wish to update.
 def processOrderUpdate():
     order_no = input(
@@ -325,8 +326,8 @@ def processOrderUpdate():
             updateAnItem(items, item_no)
             updateOrderInBackend(order_no, items)
 
-# Delivers an order "normally", wherein the order information is displayed in plain english, 
-# with the order details as a python list.  
+# Delivers an order "normally", wherein the order information is displayed in plain english,
+# with the order details as a python list.
 def normalDelivery(order, order_number, address):
     print('A delivery person has arrived at address "' +
           address + '" to delivery your order.')
@@ -334,7 +335,7 @@ def normalDelivery(order, order_number, address):
     print('Order details: ' + str(order))
 
 # Takes in the order to be delievered, its order number, and address, and returns
-# a JSON object with all the delivery information 
+# a JSON object with all the delivery information
 def getDeliveryAsJson(order, order_number, address):
     jdata = {
         "address": address,
@@ -345,21 +346,21 @@ def getDeliveryAsJson(order, order_number, address):
     jdata["order details"] = order_details
     return json.dumps(jdata)
 
-# The Uber Eats delivery which prints the order formatted as JSON data. 
+# The Uber Eats delivery which prints the order formatted as JSON data.
 def uberDelivery(order, order_number, address):
     print('Uber Eats has delivered the following order: ')
     jsonDelivery = getDeliveryAsJson(order, order_number, address)
     print(str(jsonDelivery))
 
-# The Foodora delivery, which prints the order formatted as csv 
+# The Foodora delivery, which prints the order formatted as csv
 def foodoraDelivery(order, order_number, address):
     print('Foodora has delivered the following order: ')
     delivery = getDeliveryAsJson(order, order_number, address)
     pandashah = pd.read_json(delivery, typ='series')
     print(pandashah.to_csv())
 
-# Performs a normal delivery, an Uber Eats delivery, or a Foodora delivery depending on 
-# the passed in deliverMethod selection and using the passed in details of the order. 
+# Performs a normal delivery, an Uber Eats delivery, or a Foodora delivery depending on
+# the passed in deliverMethod selection and using the passed in details of the order.
 def sendDelivery(deliverMethod, order, order_number, address):
     order_details = json.loads(order["items"])
     if deliverMethod == "1":
@@ -369,7 +370,7 @@ def sendDelivery(deliverMethod, order, order_number, address):
     elif deliverMethod == "3":
         foodoraDelivery(order, order_number, address)
 
-# Retrieves an order from the back end and delivers it according to the chosen delivery method. 
+# Retrieves an order from the back end and delivers it according to the chosen delivery method.
 def orderDelivery():
     headers = {'Content-Type': 'application/json'}
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
@@ -398,7 +399,7 @@ def printMainMenuOptions():
         6. Quit 
         ''')
 
-# Executes the according functionality depending on the user's selection 
+# Executes the according functionality depending on the user's selection
 def processMainMenuSelection(selection):
     if selection == "1":
         printMenu()
