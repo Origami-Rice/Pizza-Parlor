@@ -12,13 +12,12 @@ https://uoftcsc301a2.herokuapp.com/pizza
 You will see a response: "Welcome to Pizza Planet!"
 It means the web server is ready for client application to call
 
-## Usage (cli client application)
-
-Prerequisite: pandas package
-
+## Installation
 ```bash
-    pip install pandas
+pip3 install -r requirements.txt
 ```
+
+## Usage (cli client application)
 
 then run the app by
 
@@ -27,12 +26,6 @@ python3 Main.py
 ```
 
 ## Test
-
-Prerequisite: pytest, pytest-cov, mock packages
-
-```bash
-pip install pytest pytest-cov mock
-```
 
 Run the unit tests by
 
