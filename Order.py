@@ -1,5 +1,3 @@
-from Pizza import Pizza
-from Drinks import Drinks
 import json
 
 
@@ -8,7 +6,7 @@ class Order:
         self.order_number = order_number
         self.items = []
 
-    def addItem(self, item):
+    def add_item(self, item):
         self.items.append(item)
 
     def jsonify(self):
@@ -21,16 +19,16 @@ class Order:
         jsondata = json.dumps(jdata)
         return jsondata
 
-    def getTotalPrice(self):
+    def get_total_price(self):
         totalPrice = 0.0
         for i in self.items:
             totalPrice += i.price
         return totalPrice
 
-    def getOrderNumber(self):
+    def get_order_number(self):
         return self.order_number
 
-    def getItems(self):
+    def get_items(self):
         return self.items
 
 

@@ -21,15 +21,15 @@ class Pizza(Item):
             self.price = pizzas[type][3]
         self.price = self.price * quantity
 
-    def addToppings(self, topping):
-        menu = self.getMenu()
+    def add_toppings(self, topping):
+        menu = self.get_menu()
         self.topping.extend(topping)
         toppings = menu["pizza"]["Toppings"]
         for i in topping:
             self.price += toppings[i] * self.quantity
 
-    def changeSize(self, size):
-        menu = self.getMenu()
+    def change_size(self, size):
+        menu = self.get_menu()
         self.size = size
         pizzas = menu["pizza"]["Type"]
         if size == 12:
@@ -40,8 +40,8 @@ class Pizza(Item):
             self.price = pizzas[self.type][3]
         self.price = self.price * self.quantity
 
-    def changeTopping(self, topping):
-        menu = self.getMenu()
+    def change_topping(self, topping):
+        menu = self.get_menu()
         orginPrice = 0
         toppings = menu["pizza"]["Toppings"]
         for i in self.topping:
@@ -52,8 +52,8 @@ class Pizza(Item):
         self.price -= (orginPrice - newPrice) * self.quantity
         self.topping = topping
 
-    def changeType(self, type):
-        menu = self.getMenu()
+    def change_type(self, type):
+        menu = self.get_menu()
         self.type = type
         pizzas = menu["pizza"]["Type"]
         self.topping = pizzas[type][0]
@@ -63,10 +63,10 @@ class Pizza(Item):
             self.price = pizzas[type][2]
         else:
             self.price = pizzas[type][3]
-        self.price = self.getPrice() * self.getQuantity()
+        self.price = self.get_price() * self.get_quantity()
 
-    def getTopping(self):
+    def get_topping(self):
         return self.topping
 
-    def getSize(self):
+    def get_size(self):
         return self.size

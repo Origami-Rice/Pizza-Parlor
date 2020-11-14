@@ -12,7 +12,7 @@ class Drinks(Item):
         self.quantity = quantity
         self.category = "Drink"
 
-    def changeType(self, type):
-        menu = self.getMenu()
+    def change_type(self, type):
+        menu = self.get_menu()
         self.type = type
         self.price = menu["drinks"][type] * self.quantity

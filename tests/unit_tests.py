@@ -97,160 +97,160 @@ class TestPizzaClass(unittest.TestCase):
 
     def test_init(self):
         pizza = Pizza("pepperoni", 12, 1)
-        self.assertEqual(pizza.getPrice(), 10)
-        self.assertEqual(pizza.getSize(), 12)
-        self.assertEqual(pizza.getType(), "pepperoni")
-        self.assertEqual(pizza.getQuantity(), 1)
+        self.assertEqual(pizza.get_price(), 10)
+        self.assertEqual(pizza.get_size(), 12)
+        self.assertEqual(pizza.get_type(), "pepperoni")
+        self.assertEqual(pizza.get_quantity(), 1)
 
     def test_initMidPizza(self):
         pizza = Pizza("pepperoni", 15, 1)
-        self.assertEqual(pizza.getPrice(), 15)
-        self.assertEqual(pizza.getSize(), 15)
-        self.assertEqual(pizza.getType(), "pepperoni")
-        self.assertEqual(pizza.getQuantity(), 1)
+        self.assertEqual(pizza.get_price(), 15)
+        self.assertEqual(pizza.get_size(), 15)
+        self.assertEqual(pizza.get_type(), "pepperoni")
+        self.assertEqual(pizza.get_quantity(), 1)
 
     def test_initLargePizza(self):
         pizza = Pizza("pepperoni", 18, 1)
-        self.assertEqual(pizza.getPrice(), 20)
-        self.assertEqual(pizza.getSize(), 18)
-        self.assertEqual(pizza.getType(), "pepperoni")
-        self.assertEqual(pizza.getQuantity(), 1)
+        self.assertEqual(pizza.get_price(), 20)
+        self.assertEqual(pizza.get_size(), 18)
+        self.assertEqual(pizza.get_type(), "pepperoni")
+        self.assertEqual(pizza.get_quantity(), 1)
 
     def test_initMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
-        self.assertEqual(pizza.getPrice(), 20)
-        self.assertEqual(pizza.getSize(), 12)
-        self.assertEqual(pizza.getType(), "pepperoni")
-        self.assertEqual(pizza.getQuantity(), 2)
+        self.assertEqual(pizza.get_price(), 20)
+        self.assertEqual(pizza.get_size(), 12)
+        self.assertEqual(pizza.get_type(), "pepperoni")
+        self.assertEqual(pizza.get_quantity(), 2)
 
     def test_addEmptyTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.addToppings([])
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.getPrice(), 10)
+        pizza.add_toppings([])
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.get_price(), 10)
 
     def test_addOneTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.addToppings(["olives"])
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes", "olives"])
-        self.assertEqual(pizza.getPrice(), 12.0)
+        pizza.add_toppings(["olives"])
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes", "olives"])
+        self.assertEqual(pizza.get_price(), 12.0)
 
     def test_addMultipleTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.addToppings(["olives", "mushrooms"])
-        self.assertEqual(pizza.getTopping(),
+        pizza.add_toppings(["olives", "mushrooms"])
+        self.assertEqual(pizza.get_topping(),
                          ["olives", "tomatoes", "olives", "mushrooms"])
-        self.assertEqual(pizza.getPrice(), 13.5)
+        self.assertEqual(pizza.get_price(), 13.5)
 
     def test_addEmptyToppingAndMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
-        pizza.addToppings([])
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.getPrice(), 20)
+        pizza.add_toppings([])
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.get_price(), 20)
 
     def test_addOneToppingAndMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
-        pizza.addToppings(["olives"])
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes", "olives"])
-        self.assertEqual(pizza.getPrice(), 24.0)
+        pizza.add_toppings(["olives"])
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes", "olives"])
+        self.assertEqual(pizza.get_price(), 24.0)
 
     def test_addMultipleToppingAndMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
-        pizza.addToppings(["olives", "mushrooms"])
-        self.assertEqual(pizza.getTopping(),
+        pizza.add_toppings(["olives", "mushrooms"])
+        self.assertEqual(pizza.get_topping(),
                          ["olives", "tomatoes", "olives", "mushrooms"])
-        self.assertEqual(pizza.getPrice(), 27.0)
+        self.assertEqual(pizza.get_price(), 27.0)
 
     def test_pizzachangeSizeToMid(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeSize(15)
-        self.assertEqual(pizza.getSize(), 15)
-        self.assertEqual(pizza.getPrice(), 15)
+        pizza.change_size(15)
+        self.assertEqual(pizza.get_size(), 15)
+        self.assertEqual(pizza.get_price(), 15)
 
     def test_pizzachangeSizeToSmall(self):
         pizza = Pizza("pepperoni", 15, 1)
-        pizza.changeSize(12)
-        self.assertEqual(pizza.getSize(), 12)
-        self.assertEqual(pizza.getPrice(), 10)
+        pizza.change_size(12)
+        self.assertEqual(pizza.get_size(), 12)
+        self.assertEqual(pizza.get_price(), 10)
 
     def test_pizzachangeSizeToLarge(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeSize(18)
-        self.assertEqual(pizza.getSize(), 18)
-        self.assertEqual(pizza.getPrice(), 20)
+        pizza.change_size(18)
+        self.assertEqual(pizza.get_size(), 18)
+        self.assertEqual(pizza.get_price(), 20)
 
     def test_pizzachangeSizeMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
-        pizza.changeSize(15)
-        self.assertEqual(pizza.getSize(), 15)
-        self.assertEqual(pizza.getPrice(), 30)
+        pizza.change_size(15)
+        self.assertEqual(pizza.get_size(), 15)
+        self.assertEqual(pizza.get_price(), 30)
 
     def test_SmallpizzaChangeType(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeType("margherita")
-        self.assertEqual(pizza.getType(), "margherita")
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.getPrice(), 11)
+        pizza.change_type("margherita")
+        self.assertEqual(pizza.get_type(), "margherita")
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.get_price(), 11)
 
     def test_MidpizzaChangeType(self):
         pizza = Pizza("pepperoni", 15, 1)
-        pizza.changeType("margherita")
-        self.assertEqual(pizza.getType(), "margherita")
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.getPrice(), 15)
+        pizza.change_type("margherita")
+        self.assertEqual(pizza.get_type(), "margherita")
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.get_price(), 15)
 
     def test_LargepizzaChangeType(self):
         pizza = Pizza("pepperoni", 18, 1)
-        pizza.changeType("margherita")
-        self.assertEqual(pizza.getType(), "margherita")
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.getPrice(), 20)
+        pizza.change_type("margherita")
+        self.assertEqual(pizza.get_type(), "margherita")
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.get_price(), 20)
 
     def test_pizzaChangeTypeMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
-        pizza.changeType("margherita")
-        self.assertEqual(pizza.getType(), "margherita")
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.getPrice(), 22)
+        pizza.change_type("margherita")
+        self.assertEqual(pizza.get_type(), "margherita")
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.get_price(), 22)
 
     def test_pizzaGetTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes"])
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
 
     def test_pizzaGetQuantity(self):
         pizza = Pizza("pepperoni", 12, 1)
-        self.assertEqual(pizza.getQuantity(), 1)
+        self.assertEqual(pizza.get_quantity(), 1)
 
     def test_pizzaGetSiza(self):
         pizza = Pizza("pepperoni", 12, 1)
-        self.assertEqual(pizza.getSize(), 12)
+        self.assertEqual(pizza.get_size(), 12)
 
     def test_pizzaChangeToLessTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeTopping(["olives"])
-        self.assertEqual(pizza.getTopping(), ["olives"])
-        self.assertEqual(pizza.getPrice(), 8)
+        pizza.change_topping(["olives"])
+        self.assertEqual(pizza.get_topping(), ["olives"])
+        self.assertEqual(pizza.get_price(), 8)
 
     def test_pizzaChangeToMoreTopping(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeTopping(["olives", "tomatoes", "chicken"])
-        self.assertEqual(pizza.getTopping(), ["olives", "tomatoes", "chicken"])
-        self.assertEqual(pizza.getPrice(), 15)
+        pizza.change_topping(["olives", "tomatoes", "chicken"])
+        self.assertEqual(pizza.get_topping(), ["olives", "tomatoes", "chicken"])
+        self.assertEqual(pizza.get_price(), 15)
 
     def test_pizzaChangeQuantity(self):
         pizza = Pizza("pepperoni", 12, 1)
-        pizza.changeQuantity(3)
-        self.assertEqual((pizza.getPrice()), 30)
+        pizza.change_quantity(3)
+        self.assertEqual((pizza.get_price()), 30)
 
     def test_pizzaChangeToppingMultipleQuantity(self):
         pizza = Pizza("pepperoni", 12, 2)
-        pizza.changeTopping(["olives"])
-        self.assertEqual(pizza.getTopping(), ["olives"])
-        self.assertEqual(pizza.getPrice(), 16)
+        pizza.change_topping(["olives"])
+        self.assertEqual(pizza.get_topping(), ["olives"])
+        self.assertEqual(pizza.get_price(), 16)
 
     def test_getMenu(self):
         pizza = Pizza("pepperoni", 12, 1)
-        menu = pizza.getMenu()
+        menu = pizza.get_menu()
         self.assertEqual(menu, {
             "drinks": {
                 "Coke": 2.5,
@@ -324,72 +324,72 @@ class TestDrinksClass(unittest.TestCase):
 
     def test_init(self):
         drink = Drinks("Coke", 2)
-        self.assertEqual(drink.getPrice(), 5.0)
+        self.assertEqual(drink.get_price(), 5.0)
 
     def test_priceWithMultipleQuantity(self):
         drink = Drinks("Diet Coke", 2)
-        self.assertEqual(drink.getPrice(), 6)
+        self.assertEqual(drink.get_price(), 6)
 
     def test_drinkChangeType(self):
         drink = Drinks("Coke", 1)
-        drink.changeType("Diet Coke")
-        self.assertEqual(drink.getType(), "Diet Coke")
-        self.assertEqual(drink.getPrice(), 3)
+        drink.change_type("Diet Coke")
+        self.assertEqual(drink.get_type(), "Diet Coke")
+        self.assertEqual(drink.get_price(), 3)
 
     def test_drinkChangeTypeMultipleQuantity(self):
         drink = Drinks("Coke", 2)
-        drink.changeType("Diet Coke")
-        self.assertEqual(drink.getType(), "Diet Coke", 6)
+        drink.change_type("Diet Coke")
+        self.assertEqual(drink.get_type(), "Diet Coke", 6)
 
     def test_drinkChangeQuantity(self):
         drink = Drinks("Coke", 1)
-        drink.changeQuantity(2)
-        self.assertEqual(drink.getPrice(), 5)
+        drink.change_quantity(2)
+        self.assertEqual(drink.get_price(), 5)
 
     def test_drinkGetType(self):
         drink = Drinks("Coke", 1)
-        self.assertEqual(drink.getType(), "Coke")
+        self.assertEqual(drink.get_type(), "Coke")
 
 
 class TestOrderClass(unittest.TestCase):
 
     def test_init(self):
         order = Order(1)
-        self.assertEqual(order.getItems(), [])
-        self.assertEqual(order.getOrderNumber(), 1)
+        self.assertEqual(order.get_items(), [])
+        self.assertEqual(order.get_order_number(), 1)
 
     def test_orderTotalcost(self):
         drink = Drinks("Coke", 1)
         pizza = Pizza("pepperoni", 12, 2)
         order = Order(1)
-        order.addItem(drink)
-        order.addItem(pizza)
-        self.assertEqual(order.getTotalPrice(), 22.5)
+        order.add_item(drink)
+        order.add_item(pizza)
+        self.assertEqual(order.get_total_price(), 22.5)
 
     def test_emptyorderTotalCost(self):
         order = Order(1)
-        self.assertEqual(order.getTotalPrice(), 0)
+        self.assertEqual(order.get_total_price(), 0)
 
     def test_getOrderNumber(self):
         order = Order(1)
-        self.assertEqual(order.getOrderNumber(), 1)
+        self.assertEqual(order.get_order_number(), 1)
 
     def test_addItem(self):
         drink = Drinks("Coke", 1)
         pizza = Pizza("pepperoni", 12, 2)
         order = Order(1)
-        order.addItem(drink)
-        order.addItem(pizza)
-        self.assertEqual(order.getItems()[0].__dict__,
+        order.add_item(drink)
+        order.add_item(pizza)
+        self.assertEqual(order.get_items()[0].__dict__,
                          {"type": "Coke", "price": 2.5, "quantity": 1, "category": "Drink"})
-        self.assertEqual(order.getItems()[1].__dict__,
+        self.assertEqual(order.get_items()[1].__dict__,
                          {"type": "pepperoni", "price": 20, "quantity": 2, "category": "Pizza", "size": 12,
                           "topping": ['olives', 'tomatoes'], })
 
     def test_jsonify(self):
         drink = Drinks("Coke", 1)
         order = Order(1)
-        order.addItem(drink)
+        order.add_item(drink)
         self.assertEqual(order.jsonify(),
                          '{"order_number": 1, "items": "[{\\"type\\": \\"Coke\\", \\"price\\": 2.5, \\"quantity\\": 1, \\"category\\": \\"Drink\\"}]"}')
 
@@ -404,8 +404,8 @@ class test_main_file(unittest.TestCase):
         drink = Drinks("Coke", 1)
         pizza = Pizza("pepperoni", 12, 2)
         order = Order(1)
-        order.addItem(drink)
-        order.addItem(pizza)
+        order.add_item(drink)
+        order.add_item(pizza)
         self.assertEqual(submit_order(order), 200)
 
     def test_print_pizza(self):

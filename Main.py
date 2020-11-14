@@ -25,7 +25,7 @@ def submit_order(order):
         if rsp.status_code == 200:
             print(
                 "Order submitted successfully order_number is " + rsp.text)
-            print("the total cost will be $" + str(order.getTotalPrice()))
+            print("the total cost will be $" + str(order.get_total_price()))
             order.order_number = rsp.text
             rsp = requests.post(
                 'https://uoftcsc301a2.herokuapp.com/update/' + order.order_number,
@@ -200,11 +200,11 @@ def add_pizza_to_order(order):
         "Do you want additional toppings (y/n)? ")
     if (additionalToppings == "y"):
         additionalToppings = setup_topping()
-        new_item.addToppings(additionalToppings)
+        new_item.add_toppings(additionalToppings)
     quantity = setup_quantity()
-    new_item.changeQuantity(int(quantity))
+    new_item.change_quantity(int(quantity))
     print("Item added.")
-    order.addItem(new_item)
+    order.add_item(new_item)
 
 # Creates a drink based on user input and adds it to the passed in order.
 
@@ -217,7 +217,7 @@ def add_drink_to_order(order):
         drink = input("Enter drink's name: ")
     drink_quantity = setup_quantity()
     newItem = Drinks(drink, int(drink_quantity))
-    order.addItem(newItem)
+    order.add_item(newItem)
 
 # Prompts the user for the type of item they wish to add and adds it to the passed in order.
 
@@ -285,7 +285,7 @@ def handle_item_type_update(item, new_item):
                         yes or no: ''')
     if typeCheck == "yes":
         new_type = setup_type(item["category"])
-        new_item.changeType(new_type)
+        new_item.change_type(new_type)
 
 # Prompts user for whether they wish to update an item's quantity.
 
@@ -295,7 +295,7 @@ def handle_quantity_update(new_item):
                                 yes or no: ''')
     if quantity_check == "yes":
         new_quantity = setup_quantity()
-        new_item.changeQuantity(int(new_quantity))
+        new_item.change_quantity(int(new_quantity))
 
 # Prompts use for whether they wish to update a pizza item's size.
 
@@ -305,7 +305,7 @@ def handle_size_update(new_item):
             yes or no: ''')
     if size_check == "yes":
         new_size = setup_pizza_size()
-        new_item.changeSize(new_size)
+        new_item.change_size(new_size)
 
 # Prompts user for whether they wish to add toppings to a pizza item
 
@@ -315,7 +315,7 @@ def handle_topping_check(new_item):
                                     yes or no: ''')
     if topping_check == "yes":
         new_topping = setup_topping()
-        new_item.changeTopping(new_topping)
+        new_item.change_topping(new_topping)
 
 # Prompts for and handles all possible modification to a given item in a list of items.
 
