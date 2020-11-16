@@ -62,7 +62,7 @@ def retrieve_order(order_no):
             f.close()
         return jsonify(order)
     else:
-        return "ERROR: order - " + order_no + " not found!"
+        return "ERROR: order not found!"
 
 # Delete an order from backend data storage by an order number
 
@@ -74,9 +74,7 @@ def delete_order(order_no):
         os.remove(order_file_name)
         return order_no
     else:
-        # although order file is not found, it's still treated as
-        # delete successfully
-        return order_no
+        return "ERROR: order not found!"
 
 
 @app.route('/update/<string:order_no>', methods=['POST', 'GET'])
@@ -89,7 +87,7 @@ def update_order(order_no):
             outfile.close
         return order_no
     else:
-        return "ERROR: order - " + order_no + " not found!"
+        return "ERROR: order not found!"
 
 
 if __name__ == "__main__":
