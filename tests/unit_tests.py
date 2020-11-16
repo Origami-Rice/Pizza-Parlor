@@ -58,7 +58,7 @@ class leaving_as_itis(unittest.TestCase):
             )
         assert response.status_code == 200
         print(response.data.decode('utf-8'))
-        assert response.data.decode('utf-8') == last_no
+        assert response.data.decode('utf-8') == "ERROR: order not found!"
 
     def test_delete(self):
         with open('order/last_order_no', 'r') as f:
@@ -70,15 +70,14 @@ class leaving_as_itis(unittest.TestCase):
     def test_delete_not_found(self):
         response = app.test_client().get('/delete/1000')
         assert response.status_code == 200
-        print(response.data.decode('utf-8'))
-        assert response.data.decode('utf-8') == "1000"
+        assert response.data.decode('utf-8') == "ERROR: order not found!"
 
     def test_retrieve_not_found(self):
         response = app.test_client().get('/retrieve/1000')
 
         assert response.status_code == 200
         print(response.data.decode('utf-8'))
-        assert response.data.decode('utf-8') == "ERROR: order - 1000 not found!"
+        assert response.data.decode('utf-8') == "ERROR: order not found!"
 
     def test_update_not_found(self):
         with app.test_client() as client:
@@ -92,7 +91,7 @@ class leaving_as_itis(unittest.TestCase):
             )
         assert response.status_code == 200
         print(response.data.decode('utf-8'))
-        assert response.data.decode('utf-8') == "ERROR: order - 1000 not found!"
+        assert response.data.decode('utf-8') == "ERROR: order not found!"
 
 
 class TestPizzaClass(unittest.TestCase):
@@ -213,7 +212,7 @@ class TestPizzaClass(unittest.TestCase):
         pizza.change_type("margherita")
         self.assertEqual(pizza.get_type(), "margherita")
         self.assertEqual(pizza.get_topping(), ["olives", "tomatoes"])
-        self.assertEqual(pizza.get_price(), 22)
+        self.assertEqual(pizza.get_price(), 21)
 
     def test_pizzaGetTopping(self):
         pizza = PizzaFactory.create_item("pepperoni", 12, 1)
@@ -543,7 +542,8 @@ Juice: $2
             sys.stdout = capturedOutput
             process_order_cancellation()
             sys.stdout = sys.__stdout__
-            self.assertEqual(capturedOutput.getvalue(), '''The order has been deleted.
+            a = capturedOutput.getvalue()
+            self.assertEqual(capturedOutput.getvalue(), '''no such order
 ''')
 
     def test_print_mainmenu_option(self):
