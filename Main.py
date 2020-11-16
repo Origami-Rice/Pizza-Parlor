@@ -1,9 +1,9 @@
 import requests
 import json
-from Pizza import Pizza
 from Order import Order
-from Drinks import Drinks
 import pandas as pd
+from Pizzafactory import PizzaFactory
+from DrinkFactory import DrinkFactory
 
 # Retrieves the menu from the Menu.json file and returns it as a dictionary
 
@@ -147,7 +147,7 @@ def setup_pizza_size():
 def setup_pizza():
     pizza = setup_pizza_type()
     size = setup_pizza_size()
-    newItem = Pizza(pizza, int(size), 1)
+    newItem = PizzaFactory.create_item(pizza, int(size), 1)
     return newItem
 
 # Prompts user for a drink type until they enter one which is valid
@@ -218,7 +218,7 @@ def add_drink_to_order(order):
         print("we don't have this Drinks. Please choose again.")
         drink = input("Enter drink's name: ")
     drink_quantity = setup_quantity()
-    newItem = Drinks(drink, int(drink_quantity))
+    newItem = DrinkFactory.creat_item(drink, int(drink_quantity))
     order.add_item(newItem)
 
 # Prompts the user for the type of item they wish to add and adds it to the passed in order.
@@ -272,10 +272,10 @@ def process_order_cancellation():
 
 def init_item_to_be_updated(item):
     if item["category"] == "Pizza":
-        new_item = Pizza(item["type"], item["size"],
+        new_item = PizzaFactory.create_item(item["type"], item["size"],
                          item["quantity"])
     else:
-        new_item = Drinks(item["type"], item["quantity"])
+        new_item = DrinkFactory.creat_item(item["type"], item["quantity"])
     return new_item
 
 # Prompts user for whether they wish to change an item's type (within the same category.

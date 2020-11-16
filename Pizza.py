@@ -3,6 +3,16 @@ from Item import Item
 
 
 class Pizza(Item):
+    """
+    create a pizza object
+    attributes:
+        size: the size of pizza, in 12, 15 or 18
+        category: what is the item
+        type: what type of pizza
+        price: the total price of this pizza object
+        quantity: the quantity of this pizza object
+    """
+
     def __init__(self, type, size, quantity):
         super().__init__(type, quantity)
         with open('order/Menu.json') as f:
@@ -20,6 +30,9 @@ class Pizza(Item):
             self.price = pizzas[type][3]
         self.price = self.price * quantity
 
+    """ add topping to the pizza and modify the price according to
+     the change in topping"""
+
     def add_toppings(self, topping):
         menu = self.get_menu()
         self.topping.extend(topping)
@@ -27,6 +40,7 @@ class Pizza(Item):
         for i in topping:
             self.price += toppings[i] * self.quantity
 
+    # change the size of pizza, also change price according
     def change_size(self, size):
         menu = self.get_menu()
         self.size = size
@@ -39,6 +53,7 @@ class Pizza(Item):
             self.price = pizzas[self.type][3]
         self.price = self.price * self.quantity
 
+    # change the topping of pizza, also change price according
     def change_topping(self, topping):
         menu = self.get_menu()
         orginPrice = 0
@@ -51,6 +66,7 @@ class Pizza(Item):
         self.price -= (orginPrice - newPrice) * self.quantity
         self.topping = topping
 
+    # change the type of pizza, also change price according
     def change_type(self, type):
         menu = self.get_menu()
         self.type = type
@@ -64,8 +80,10 @@ class Pizza(Item):
             self.price = pizzas[type][3]
         self.price = self.get_price() * self.get_quantity()
 
+    # get the topping of pizza
     def get_topping(self):
         return self.topping
 
+    # get the topping of pizza
     def get_size(self):
         return self.size

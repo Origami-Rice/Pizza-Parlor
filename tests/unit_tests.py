@@ -504,7 +504,6 @@ Juice: $2
             sys.stdout = capturedOutput
             print_menu_helper("2")
             sys.stdout = sys.__stdout__
-            a = capturedOutput.getvalue()
             self.assertEqual(capturedOutput.getvalue(), '''Coke price is $2.5
 ''')
 
@@ -514,7 +513,6 @@ Juice: $2
             sys.stdout = capturedOutput
             print_menu()
             sys.stdout = sys.__stdout__
-            a = capturedOutput.getvalue()
             self.assertEqual(capturedOutput.getvalue(), '''--------------------------Menu--------------------------
 Pizzas:
 pepperoni Small: $10 Medium: $15 Large: $20
@@ -545,7 +543,6 @@ Juice: $2
             sys.stdout = capturedOutput
             process_order_cancellation()
             sys.stdout = sys.__stdout__
-            a = capturedOutput.getvalue()
             self.assertEqual(capturedOutput.getvalue(), '''The order has been deleted.
 ''')
 
@@ -554,7 +551,6 @@ Juice: $2
         sys.stdout = capturedOutput
         print_main_menu_options()
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''Select a number for the action you would like to do: 
         1. Access the menu  
         2. Submit an order
@@ -587,7 +583,6 @@ Juice: $2
         normal_delivery([{'type': 'custom', 'size': 12, 'category': 'Pizza', 'quantity': 1, 'topping': [], 'price': 5}],
                         "1", "test address")
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''A delivery person has arrived at address "test address" to delivery your order.
 Order number: 1
 Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]
@@ -609,7 +604,6 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
                        'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                       "1", "test address")
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''Uber Eats has delivered the following order: 
 {"address": "test address", "order number": "1", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}
 ''')
@@ -621,7 +615,6 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
                           'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                          "1", "test address")
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(),
                          'Foodora has delivered the following order: \n,0\naddress,test address\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
 
@@ -632,7 +625,6 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
                             'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                       "1", "qwe")
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''A delivery person has arrived at address "qwe" to delivery your order.
 Order number: 1
 Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]
@@ -645,7 +637,6 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
                             'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                       "1", "qwe")
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''Uber Eats has delivered the following order: 
 {"address": "qwe", "order number": "1", "order details": [{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]}
 ''')
@@ -657,7 +648,6 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
                             'items': '[{"type": "custom", "size": 12, "category": "Pizza", "quantity": 1, "topping": [], "price": 5}]'},
                       "1", "qwe")
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(),
                          'Foodora has delivered the following order: \n,0\naddress,qwe\norder number,1\norder details,"[{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'quantity\': 1, \'topping\': [], \'price\': 5}]"\n\n')
 
@@ -694,6 +684,5 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
         sys.stdout = capturedOutput
         process_main_menu_selection("6")
         sys.stdout = sys.__stdout__
-        a = capturedOutput.getvalue()
         self.assertEqual(capturedOutput.getvalue(), '''invalid selection
 ''')
