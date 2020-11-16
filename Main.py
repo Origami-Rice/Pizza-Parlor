@@ -299,6 +299,7 @@ def init_item_to_be_updated(item):
     if item["category"] == "Pizza":
         new_item = PizzaFactory.create_item(item["type"], item["size"],
                                             item["quantity"])
+        new_item.change_topping(item["topping"])
     else:
         new_item = DrinkFactory.creat_item(item["type"], item["quantity"])
     return new_item
@@ -312,7 +313,7 @@ def handle_item_type_update(item, new_item):
     typeCheck = input('''Do you want to change the Type?
                         yes or no: ''')
     if typeCheck == "yes":
-        new_type = setup_type(item["category"])
+        new_type = setup_pizza_type()
         new_item.change_type(new_type)
 
 

@@ -69,15 +69,14 @@ class Pizza(Item):
     # change the type of pizza, also change price according
     def change_type(self, type):
         menu = self.get_menu()
-        self.type = type
         pizzas = menu["pizza"]["Type"]
-        self.topping = pizzas[type][0]
         if self.size == 12:
-            self.price = pizzas[type][1]
+            self.price += (pizzas[type][1]- pizzas[self.type][1])
         elif self.size == 15:
-            self.price = pizzas[type][2]
+            self.price += (pizzas[type][2] - pizzas[self.type][2])
         else:
-            self.price = pizzas[type][3]
+            self.price += (pizzas[type][3] - pizzas[self.type][3])
+        self.type = type
         self.price = self.get_price() * self.get_quantity()
 
     # get the topping of pizza
