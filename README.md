@@ -26,6 +26,10 @@ python3 Main.py
 ```
 
 ## Test
+install the module
+```bash
+pip3 install pytest-cov 
+```
 
 Run the unit tests by
 
