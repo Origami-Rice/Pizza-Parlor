@@ -203,6 +203,9 @@ def setup_topping():
 
 def setup_quantity():
     quantity = input("Enter how many you would like: ")
+    while not quantity.isdigit():
+        print("invalid quantity, please choose again")
+        quantity = input("Enter how many would you like: ")
     while float(quantity) <= 0 or float(
             quantity) % 1 != 0.0:
         print("invalid quantity, please choose again")
