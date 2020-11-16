@@ -36,6 +36,7 @@ pytest --cov-report term --cov=. tests/unit_tests.py
 ### Note on test
 
 there are three test cases showing fail, those are the tests that require getting order from server and test, and since we are using heroku, everytime we update our github repo, the order file stored will be deleted, but those three tests are correct when the order file are not deleted.
+<br> also some string comparing test might fail if you use windows but pass if you use Mac, the difference is probably because of "\r", still can't solve that but you can consider those as correct ones. those tests are test_foodoraDelivery, test_sendD3
 
 ## Pair Programming 
 The two features that we pair programmed are the update order feature and the pickup/delivery feature. <br>
