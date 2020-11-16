@@ -286,7 +286,7 @@ def process_order_cancellation():
     base_url = 'https://uoftcsc301a2.herokuapp.com/'
     order_no = input('''Enter the number of the order you wish to cancel: ''')
     r = requests.get(base_url + "delete/" + order_no)
-    if r.text == 'ERROR: order - 1 not found!':
+    if r.text == 'ERROR: order not found!':
         print("no such order")
         return
     print("The order has been deleted.")
@@ -494,7 +494,7 @@ def order_delivery():
     order_no = input(
         '''Enter the order number of the order you want to call delivery  ''')
     r = requests.get(base_url + 'retrieve/' + order_no)
-    if r.text == 'ERROR: order - 1 not found!':
+    if r.text == 'ERROR: order not found!':
         print("no such order")
         return
     json_order_data = json.loads(r.text)
