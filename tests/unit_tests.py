@@ -26,7 +26,8 @@ class leaving_as_itis(unittest.TestCase):
             # send data as POST form to endpoint
             sent = {"order_number": "1",
                     "items": [{"type": "pepperoni", "size": 12, "topping": [
-                        "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
+                        "olives", "tomatoes", "olives", "tomatoes"],
+                               "price": 14}]}
             result = client.post(
                 '/create',
                 data=sent
@@ -51,7 +52,8 @@ class leaving_as_itis(unittest.TestCase):
             # send data as POST form to endpoint
             sent = {"order_number": "1",
                     "items": [{"type": "pepperoni", "size": 12, "topping": [
-                        "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
+                        "olives", "tomatoes", "olives", "tomatoes"],
+                               "price": 14}]}
             response = client.post(
                 '/update/' + last_no,
                 data=sent
@@ -84,7 +86,8 @@ class leaving_as_itis(unittest.TestCase):
             # send data as POST form to endpoint
             sent = {"order_number": "1",
                     "items": [{"type": "pepperoni", "size": 12, "topping": [
-                        "olives", "tomatoes", "olives", "tomatoes"], "price": 14}]}
+                        "olives", "tomatoes", "olives", "tomatoes"],
+                               "price": 14}]}
             response = client.post(
                 '/update/1000',
                 data=sent
@@ -382,9 +385,11 @@ class TestOrderClass(unittest.TestCase):
         order.add_item(drink)
         order.add_item(pizza)
         self.assertEqual(order.get_items()[0].__dict__,
-                         {"type": "Coke", "price": 2.5, "quantity": 1, "category": "Drink"})
+                         {"type": "Coke", "price": 2.5, "quantity": 1,
+                          "category": "Drink"})
         self.assertEqual(order.get_items()[1].__dict__,
-                         {"type": "pepperoni", "price": 20, "quantity": 2, "category": "Pizza", "size": 12,
+                         {"type": "pepperoni", "price": 20, "quantity": 2,
+                          "category": "Pizza", "size": 12,
                           "topping": ['olives', 'tomatoes'], })
 
     def test_jsonify(self):
@@ -567,7 +572,8 @@ Juice: $2
             sys.stdout = capturedOutput
             process_order_submission()
             sys.stdout = sys.__stdout__
-            self.assertEqual(capturedOutput.getvalue(), '''can't submit empty order\n''')
+            self.assertEqual(capturedOutput.getvalue(),
+                             '''can't submit empty order\n''')
 
     def test_setup_topping(self):
         with mock.patch('builtins.input', return_value="q"):
@@ -580,7 +586,8 @@ Juice: $2
     def test_normal_delivery(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        normal_delivery([{'type': 'custom', 'size': 12, 'category': 'Pizza', 'quantity': 1, 'topping': [], 'price': 5}],
+        normal_delivery([{'type': 'custom', 'size': 12, 'category': 'Pizza',
+                          'quantity': 1, 'topping': [], 'price': 5}],
                         "1", "test address")
         sys.stdout = sys.__stdout__
         self.assertEqual(capturedOutput.getvalue(), '''A delivery person has arrived at address "test address" to delivery your order.
@@ -664,17 +671,20 @@ Order details: [{\'type\': \'custom\', \'size\': 12, \'category\': \'Pizza\', \'
 
     def test_retrieve_orderaslist(self):
         self.assertEqual(retrieve_order_as_list("1051"),
-                         [{'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'}])
+                         [{'type': 'Coke', 'price': 7.5, 'quantity': 3,
+                           'category': 'Drink'}])
 
     def test_initItemTobeUpdateDrink(self):
-        newitem = init_item_to_be_updated({'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'})
+        newitem = init_item_to_be_updated(
+            {'type': 'Coke', 'price': 7.5, 'quantity': 3, 'category': 'Drink'})
         self.assertEqual(newitem.type, "Coke")
         self.assertEqual(newitem.quantity, 3)
         self.assertEqual(newitem.price, 7.5)
 
     def test_initItemTobeUpdatePizza(self):
         newitem = init_item_to_be_updated(
-            {'type': 'pepperoni', 'price': 30, 'quantity': 3, 'category': 'Pizza', 'size': 12})
+            {'type': 'pepperoni', 'price': 30, 'quantity': 3,
+             'category': 'Pizza', 'size': 12, 'topping': ["olives", "tomatoes"]})
         self.assertEqual(newitem.type, "pepperoni")
         self.assertEqual(newitem.quantity, 3)
         self.assertEqual(newitem.price, 30)
