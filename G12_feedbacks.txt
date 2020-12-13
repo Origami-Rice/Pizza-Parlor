@@ -1,0 +1,27 @@
+Pair Programming (13.5/15):
+The report contained some good reflections on what went well and not well in the process.
+It would be also nice to also talk about what can be done better next time in terms of pair programming.
+
+Program design (17/20):
+The report briefly talked about the design patterns used in the program (Factory method and chain of responsibility).
+The program design is good in general.
+
+Functionality (24/25):
+Have simple input error checking against wrong inputs.
+CLI is mostly easy to use and all the functionality that were tested worked. It would be better if user doesn't have to type all the selections (e.g. use a numbering system) or they can pick using up/down arrows.
+
+Tests (16/20):
+Could not run the tests to see the coverage since dependency installation failed.
+
+Code Craftsmanship (7/10):
+There are some comments included for some of the functions explaining their usage.
+The coding style looks clean and consistent.
+The report didn't mention the tools being used for development.
+
+md explanation and organization (8/10):
+The readme file included good set of instructions on how to run and test the program.
+Have some trouble installing all the dependencies from the requirements.txt file, but could run the cli.
+
+
+total: 85.5
+
